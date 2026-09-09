@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f8fbff"><link rel="manifest" href="manifest.json"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
-<title>Amali Life</title>
+<title>Im Amali</title>
 <style>
 :root{--bg:#f8fbff;--card:#fff;--text:#27364b;--muted:#8b9aae;--line:#edf2f8;--blue:#a9cbed;--blue2:#5d88b5;--soft:#f4f8fd}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.app{max-width:480px;margin:auto;padding:22px 18px 96px}.screen{display:none}.screen.active{display:block}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}h1{font-size:27px;margin:0;font-weight:760;letter-spacing:-.7px}.date{font-size:13px;color:var(--muted);margin-top:5px}.avatar{width:43px;height:43px;border-radius:15px;background:#dfefff;display:grid;place-items:center;font-size:19px}.pageTitle{font-size:24px;font-weight:760;margin:18px 0}.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;margin:12px 0;box-shadow:0 7px 24px #dbe7f233}.cardhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px}.title{font-weight:720;font-size:16px}.small{font-size:12px;color:var(--muted)}.quote{background:linear-gradient(135deg,#edf7ff,#f8f1ff);border:0}.quoteText{font-size:20px;font-weight:700;margin-top:7px}.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}.stat{background:var(--soft);border-radius:17px;padding:15px}.num{font-size:20px;font-weight:750;margin-top:5px}.progress{height:9px;background:#edf3fa;border-radius:10px;overflow:hidden}.bar{height:100%;background:var(--blue);border-radius:10px}.task{display:flex;gap:12px;align-items:center;padding:10px 0;font-size:14px}.check{width:20px;height:20px;border:1.5px solid #b8c8da;border-radius:7px;flex:none;cursor:pointer}.check.done{background:var(--blue);border-color:var(--blue);position:relative}.check.done:after{content:"✓";color:#fff;position:absolute;left:4px;top:0;font-size:14px}.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.quick button,.btn{border:0;background:var(--soft);border-radius:16px;padding:13px 4px;color:#52657c;cursor:pointer}.quick span{display:block;font-size:20px;margin-bottom:5px}.btn{background:var(--blue);color:#27425d;padding:12px 16px;font-weight:700}.btn.full{width:100%;margin-top:10px}.back{border:0;background:#eef5fc;border-radius:12px;padding:8px 11px;color:var(--blue2);cursor:pointer}.row{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);gap:10px}.row:last-child{border:0}.addbox{display:grid;grid-template-columns:1fr auto;gap:9px}input,textarea,select{width:100%;border:1px solid var(--line);background:#f8fbff;border-radius:14px;padding:12px;color:var(--text);outline:none}textarea{min-height:110px;resize:vertical}.pill{display:inline-block;background:#eef6ff;border-radius:20px;padding:6px 10px;font-size:12px;color:#5d88b5}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.mini{background:var(--soft);padding:13px;border-radius:16px}.mini b{display:block;font-size:18px;margin-top:4px}.habit{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line)}.habit:last-child{border:0}.note{padding:14px;background:var(--soft);border-radius:15px;margin-top:10px}.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(480px,100%);padding:10px 8px calc(10px + env(safe-area-inset-bottom));background:#ffffffee;backdrop-filter:blur(14px);display:flex;justify-content:space-around;border-top:1px solid var(--line);z-index:5}.nav button{border:0;background:none;color:var(--muted);font-size:10px;cursor:pointer;min-width:52px}.nav b{display:block;font-size:20px;margin-bottom:3px;font-weight:500}.nav .active{color:var(--blue2)}.toast{position:fixed;bottom:82px;left:50%;transform:translateX(-50%);background:#27364b;color:#fff;padding:10px 16px;border-radius:14px;font-size:13px;display:none;z-index:10}
@@ -15,7 +15,7 @@
 <header class="top"><div><h1>Good morning, Amali ✨</h1><div class="date" id="date"></div></div><div class="avatar">🌷</div></header>
 <div class="card quote"><div class="small">TODAY'S FOCUS</div><div class="quoteText">Small steps, beautiful progress.</div></div>
 <div class="card"><div class="cardhead"><div class="title">Today's tasks</div><div class="small" id="taskCount">0 / 5</div></div><div id="homeTasks"></div></div>
-<div class="card"><div class="cardhead"><div class="title">Money</div><div class="small">This month</div></div><div class="stats"><div class="stat"><div class="small">Income</div><div class="num" id="homeIncome">RM 2,000</div></div><div class="stat"><div class="small">Expenses</div><div class="num" id="homeExpense">RM 560</div></div></div><div style="margin-top:14px" class="small">Budget used</div><div class="progress" style="margin-top:7px"><div class="bar" id="budgetBar" style="width:28%"></div></div></div>
+<div class="card"><div class="cardhead"><div class="title">Money</div><div class="small">This month</div></div><div class="stats"><div class="stat"><div class="small">Income</div><div class="num" id="homeIncome"><span data-editable-income>RM 2,000.00</span></div></div><div class="stat"><div class="small">Expenses</div><div class="num" id="homeExpense">RM 560</div></div></div><div style="margin-top:14px" class="small">Budget used</div><div class="progress" style="margin-top:7px"><div class="bar" id="budgetBar" style="width:28%"></div></div></div>
 <div class="card"><div class="cardhead"><div class="title">Goals</div><div class="small" id="goalPct">70%</div></div><div class="progress"><div class="bar" id="goalBar" style="width:70%"></div></div><div class="small" style="margin-top:9px">Building a better life, one day at a time.</div></div>
 <div class="card"><div class="cardhead"><div class="title">Quick access</div></div><div class="quick"><button onclick="show('planner')"><span>📅</span>Planner</button><button onclick="show('money')"><span>💰</span>Money</button><button onclick="show('health')"><span>🌿</span>Health</button><button onclick="show('goals')"><span>🎯</span>Goals</button></div></div>
 </section>
@@ -25,7 +25,7 @@
 <div class="card"><div class="title">Routine</div><div class="row"><span>🌅 Morning</span><b>6:00 AM</b></div><div class="row"><span>💼 Work</span><b>8:00 AM – 10:00 PM</b></div><div class="row"><span>🌙 Wind down</span><b>11:45 PM</b></div></div></section>
 
 <section id="money" class="screen"><button class="back" onclick="show('home')">← Home</button><div class="pageTitle">Money & Loan</div>
-<div class="card"><div class="grid2"><div class="mini"><div class="small">Income</div><b>RM 2,000</b></div><div class="mini"><div class="small">Expenses</div><b id="mExpense">RM 560</b></div><div class="mini"><div class="small">Loan balance</div><b id="loanBal">LKR 525,000</b></div><div class="mini"><div class="small">Monthly interest</div><b>LKR 52,500</b></div></div></div>
+<div class="card"><div class="grid2"><div class="mini"><div class="small">Income</div><b><span data-editable-income>RM 2,000.00</span></b></div><div class="mini"><div class="small">Expenses</div><b id="mExpense">RM 560</b></div><div class="mini"><div class="small">Loan balance</div><b id="loanBal"><span data-editable-loan>LKR 525,000</span></b></div><div class="mini"><div class="small">Monthly interest</div><b>LKR 52,500</b></div></div></div>
 <div class="card"><div class="title">Monthly budget</div><div class="row"><span>Room rent</span><b>RM 300</b></div><div class="row"><span>Transport</span><b>RM 200</b></div><div class="row"><span>Phone</span><b>RM 60</b></div><div class="row"><span>Loan payment</span><b>RM 800</b></div></div>
 <div class="card"><div class="title">Add expense</div><div class="addbox"><input id="expenseInput" type="number" placeholder="RM amount"><button class="btn" onclick="addExpense()">Add</button></div></div></section>
 
@@ -46,7 +46,7 @@
 
 <section id="progress" class="screen"><button class="back" onclick="show('home')">← Home</button><div class="pageTitle">Progress</div><div class="card"><div class="cardhead"><div class="title">This week</div><span class="pill">Growing</span></div><div class="grid2"><div class="mini"><div class="small">Tasks completed</div><b id="progTasks">0</b></div><div class="mini"><div class="small">Water today</div><b id="progWater">0 / 8</b></div><div class="mini"><div class="small">Goal progress</div><b>70%</b></div><div class="mini"><div class="small">Budget used</div><b>28%</b></div></div></div><div class="card"><div class="title">Keep going, Amali 🌷</div><p class="small">Consistency matters more than perfection.</p></div></section>
 
-<section id="settings" class="screen"><button class="back" onclick="show('home')">← Home</button><div class="pageTitle">Settings</div><div class="card"><div class="row"><span>🌷 App name</span><b>Amali Life</b></div><div class="row"><span>🎨 Theme</span><b>Soft Minimal</b></div><div class="row"><span>💾 Data</span><button class="btn" onclick="clearData()">Clear saved notes & water</button></div></div></section>
+<section id="settings" class="screen"><button class="back" onclick="show('home')">← Home</button><div class="pageTitle">Settings</div><div class="card"><div class="row"><span>🌷 App name</span><b>Im Amali</b></div><div class="row"><span>🎨 Theme</span><b>Soft Minimal</b></div><div class="row"><span>💾 Data</span><button class="btn" onclick="clearData()">Clear saved notes & water</button></div></div></section>
 </main>
 
 <nav class="nav"><button onclick="show('home',this)" class="active"><b>⌂</b>Home</button><button onclick="show('planner',this)"><b>✓</b>Tasks</button><button onclick="show('money',this)"><b>＋</b>Money</button><button onclick="show('progress',this)"><b>◌</b>Progress</button><button onclick="show('settings',this)"><b>⚙</b>Settings</button></nav>
@@ -70,4 +70,58 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 }
 </script>
+
+<div id="editableSettingsModal" class="modal" style="display:none;position:fixed;inset:0;background:rgba(20,30,45,.35);z-index:9999;padding:20px;overflow:auto">
+  <div style="max-width:520px;margin:40px auto;background:#fff;border-radius:24px;padding:22px;box-shadow:0 15px 50px rgba(0,0,0,.12)">
+    <h2 style="margin:0 0 6px">Edit My Details</h2>
+    <p style="margin:0 0 18px;color:#718096">Change these anytime. They are saved on this phone.</p>
+    <div style="display:grid;gap:12px">
+      <label>Monthly income<input id="setIncome" type="number" min="0" step="0.01"></label>
+      <label>Loan balance (LKR)<input id="setLoan" type="number" min="0" step="1"></label>
+      <label>Monthly loan interest (LKR)<input id="setInterest" type="number" min="0" step="1"></label>
+      <label>Room rent<input id="setRent" type="number" min="0" step="0.01"></label>
+      <label>Transport<input id="setTransport" type="number" min="0" step="0.01"></label>
+      <label>Phone<input id="setPhone" type="number" min="0" step="0.01"></label>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:18px">
+      <button id="saveProfileSettings" style="flex:1">Save changes</button>
+      <button id="closeProfileSettings" style="flex:1">Cancel</button>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+ const defaults={income:2000,loan:525000,interest:52500,rent:300,transport:200,phone:60};
+ const key='imAmaliProfile';
+ function get(){try{return {...defaults,...JSON.parse(localStorage.getItem(key)||'{}')}}catch(e){return {...defaults}}}
+ function put(){
+   const v={income:+document.getElementById('setIncome').value||0,loan:+document.getElementById('setLoan').value||0,interest:+document.getElementById('setInterest').value||0,rent:+document.getElementById('setRent').value||0,transport:+document.getElementById('setTransport').value||0,phone:+document.getElementById('setPhone').value||0};
+   localStorage.setItem(key,JSON.stringify(v)); apply(v); close(); alert('Saved ✓');
+ }
+ function open(){
+   const v=get();
+   ['Income','Loan','Interest','Rent','Transport','Phone'].forEach(n=>document.getElementById('set'+n).value=v[n.toLowerCase()]??0);
+   document.getElementById('editableSettingsModal').style.display='block';
+ }
+ function close(){document.getElementById('editableSettingsModal').style.display='none'}
+ function apply(v){
+   // Replace common hard-coded displayed amounts in the current page.
+   document.querySelectorAll('[data-editable-income]').forEach(e=>e.textContent='RM '+v.income.toFixed(2));
+   document.querySelectorAll('[data-editable-loan]').forEach(e=>e.textContent='LKR '+v.loan.toLocaleString());
+ }
+ function addButton(){
+   const modal=document.getElementById('editableSettingsModal');
+   const btn=document.createElement('button');
+   btn.textContent='Edit Income & Loan';
+   btn.id='openProfileSettings';
+   btn.style.cssText='position:fixed;right:18px;bottom:82px;z-index:9998;border:0;border-radius:18px;padding:12px 16px;box-shadow:0 6px 20px rgba(0,0,0,.12)';
+   document.body.appendChild(btn); btn.onclick=open;
+   document.getElementById('saveProfileSettings').onclick=put;
+   document.getElementById('closeProfileSettings').onclick=close;
+   apply(get());
+ }
+ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',addButton); else addButton();
+})();
+</script>
+
 </body></html>
