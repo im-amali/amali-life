@@ -12,41 +12,44 @@
 <body><main class="app">
 
 <section id="home" class="screen active">
-<header class="top"><div><h1>Good morning, Amali ✨</h1><div class="date" id="date"></div></div><div class="avatar">🌷</div></header>
-<div class="card quote"><div class="small">TODAY'S FOCUS</div><div class="quoteText">Small steps, beautiful progress.</div></div>
+<header class="top"><div><h1 id="homeGreeting">Good morning, Amali ✨</h1><div class="date" id="date"></div></div><div class="avatar">🌷</div></header>
+<div class="card quote"><div class="small">TODAY'S FOCUS</div><div class="quoteText" id="focusText">Small steps, beautiful progress.</div></div>
 <div class="card"><div class="cardhead"><div class="title">Today's tasks</div><div class="small" id="taskCount">0 / 5</div></div><div id="homeTasks"></div></div>
-<div class="card"><div class="cardhead"><div class="title">Money</div><div class="small">This month</div></div><div class="stats"><div class="stat"><div class="small">Income</div><div class="num" id="homeIncome"><span data-editable-income>RM 2,000.00</span></div></div><div class="stat"><div class="small">Expenses</div><div class="num" id="homeExpense">RM 560</div></div></div><div style="margin-top:14px" class="small">Budget used</div><div class="progress" style="margin-top:7px"><div class="bar" id="budgetBar" style="width:28%"></div></div></div>
+<div class="card"><div class="cardhead"><div class="title">Money</div><div class="small">This month</div></div><div class="stats"><div class="stat"><div class="small">Income</div><div class="num" id="homeIncome">RM 0</div></div><div class="stat"><div class="small">Expenses</div><div class="num" id="homeExpense">RM 0</div></div></div><div style="margin-top:14px" class="small">Budget used</div><div class="progress" style="margin-top:7px"><div class="bar" id="budgetBar" style="width:28%"></div></div></div>
 <div class="card"><div class="cardhead"><div class="title">Goals</div><div class="small" id="goalPct">70%</div></div><div class="progress"><div class="bar" id="goalBar" style="width:70%"></div></div><div class="small" style="margin-top:9px">Building a better life, one day at a time.</div></div>
 <div class="card"><div class="cardhead"><div class="title">Quick access</div></div><div class="quick"><button onclick="show('planner')"><span>📅</span>Planner</button><button onclick="show('money')"><span>💰</span>Money</button><button onclick="show('health')"><span>🌿</span>Health</button><button onclick="show('goals')"><span>🎯</span>Goals</button></div></div>
 </section>
 
 <section id="planner" class="screen"><button class="back" onclick="show('home')">← Home</button><div class="pageTitle">Daily Planner</div>
 <div class="card"><div class="cardhead"><div class="title">Add a task</div><span class="pill" id="plannerCount">0 done</span></div><div class="addbox"><input id="taskInput" placeholder="What do you need to do?"><button class="btn" onclick="addTask()">Add</button></div><div id="tasks"></div></div>
-<div class="card"><div class="title">Routine</div><div class="row"><span>🌅 Morning</span><b>6:00 AM</b></div><div class="row"><span>💼 Work</span><b>8:00 AM – 10:00 PM</b></div><div class="row"><span>🌙 Wind down</span><b>11:45 PM</b></div></div></section>
-
+<div class="card"><div class="title">Routine</div>
+<div class="row"><span>🌅 Morning</span><b id="routineMorning">6:00 AM</b></div>
+<div class="row"><span>💼 Work</span><b id="routineWork">8:00 AM – 10:00 PM</b></div>
+<div class="row"><span>🌙 Wind down</span><b id="routineWind">11:45 PM</b></div>
+</div></section>
 <section id="money" class="screen"><button class="back" onclick="show('home')">← Home</button><div class="pageTitle">Money & Loan</div>
-<div class="card"><div class="grid2"><div class="mini"><div class="small">Income</div><b><span data-editable-income>RM 2,000.00</span></b></div><div class="mini"><div class="small">Expenses</div><b id="mExpense">RM 560</b></div><div class="mini"><div class="small">Loan balance</div><b id="loanBal"><span data-editable-loan>LKR 525,000</span></b></div><div class="mini"><div class="small">Monthly interest</div><b>LKR 52,500</b></div></div></div>
-<div class="card"><div class="title">Monthly budget</div><div class="row"><span>Room rent</span><b>RM 300</b></div><div class="row"><span>Transport</span><b>RM 200</b></div><div class="row"><span>Phone</span><b>RM 60</b></div><div class="row"><span>Loan payment</span><b>RM 800</b></div></div>
-<div class="card"><div class="title">Add expense</div><div class="addbox"><input id="expenseInput" type="number" placeholder="RM amount"><button class="btn" onclick="addExpense()">Add</button></div></div></section>
+<div class="card"><div class="grid2"><div class="mini"><div class="small">Income</div><b id="mIncome">RM 0</b></div><div class="mini"><div class="small">Monthly expenses</div><b id="mExpense">RM 0</b></div><div class="mini"><div class="small">Loan balance</div><b id="loanBal">LKR 0</b></div><div class="mini"><div class="small">Interest rate</div><b id="interestRate">0%</b></div></div></div>
+<div class="card"><div class="title">Monthly budget</div><div class="row"><span>Room rent</span><b id="budgetRent">RM 0</b></div><div class="row"><span>Transport</span><b id="budgetTransport">RM 0</b></div><div class="row"><span>Phone</span><b id="budgetPhone">RM 0</b></div><div class="row"><span>Loan payment</span><b id="budgetLoanPayment">RM 0</b></div><div class="row"><span>Other expenses</span><b id="budgetOther">RM 0</b></div><div class="row"><span><b>Total monthly expenses</b></span><b id="budgetTotal">RM 0</b></div></div>
+<div class="card"><div class="title">Add expense</div><div class="addbox"><input id="expenseInput" type="number" placeholder="RM amount"><button class="btn" onclick="addExpense()">Add</button></div><div id="expenseList"></div></div></section>
 
 <section id="health" class="screen"><button class="back" onclick="show('home')">← Home</button><div class="pageTitle">Health & Meals</div>
 <div class="card"><div class="cardhead"><div class="title">Water</div><div class="small" id="waterText">0 / 8 glasses</div></div><div class="progress"><div class="bar" id="waterBar" style="width:0%"></div></div><button class="btn" style="margin-top:14px" onclick="water()">+ 1 glass</button></div>
-<div class="card"><div class="cardhead"><div class="title">Today's meals</div><span class="pill">Balanced</span></div><div class="row"><span>🌅 Breakfast</span><span>Oats + banana</span></div><div class="row"><span>☀️ Lunch</span><span>Rice + vegetables + egg</span></div><div class="row"><span>🍎 Snack</span><span>Fruit</span></div><div class="row"><span>🌙 Dinner</span><span>Soup + protein</span></div></div>
-<div class="card"><div class="title">Body progress</div><div class="grid2" style="margin-top:12px"><div class="mini"><div class="small">Current</div><b>57 kg</b></div><div class="mini"><div class="small">Goal</div><b>50 kg</b></div></div></div></section>
+<div class="card"><div class="cardhead"><div class="title">Today's meals</div><span class="pill" id="mealStyle">Balanced</span></div><div id="mealRows"></div></div>
+<div class="card"><div class="title">Body progress</div><div class="grid2" style="margin-top:12px"><div class="mini"><div class="small">Current</div><b id="bodyCurrent">57 kg</b></div><div class="mini"><div class="small">Goal</div><b id="bodyGoal">50 kg</b></div></div></div></section>
 
 <section id="selfcare" class="screen"><button class="back" onclick="show('home')">← Home</button><div class="pageTitle">Self-Care</div>
-<div class="card"><div class="title">Today's routine</div><div class="habit"><span>💧 Water & hydration</span><span class="check" onclick="this.classList.toggle('done')"></span></div><div class="habit"><span>🧴 Skin care</span><span class="check" onclick="this.classList.toggle('done')"></span></div><div class="habit"><span>💇 Hair care</span><span class="check" onclick="this.classList.toggle('done')"></span></div><div class="habit"><span>🧘 Quiet time</span><span class="check" onclick="this.classList.toggle('done')"></span></div></div>
-<div class="card"><div class="title">Weekly habits</div><div class="row"><span>Skincare</span><span>○ ○ ○ ○ ○ ○ ○</span></div><div class="row"><span>Hair care</span><span>○ ○ ○ ○ ○ ○ ○</span></div><div class="row"><span>Exercise</span><span>○ ○ ○ ○ ○ ○ ○</span></div></div></section>
+<div class="card"><div class="title">Today's routine</div><div id="selfCareRows"></div></div>
+<div class="card"><div class="title">Weekly habits</div><div id="weeklyHabitRows"></div></div></section>
 
 <section id="goals" class="screen"><button class="back" onclick="show('home')">← Home</button><div class="pageTitle">Goals</div>
-<div class="card"><div class="cardhead"><div class="title">Main goal</div><div class="small">70%</div></div><div class="progress"><div class="bar" style="width:70%"></div></div><p class="small">Build a peaceful, independent life.</p></div>
-<div class="card"><div class="title">Goal checklist</div><div class="task"><span class="check" onclick="this.classList.toggle('done')"></span>Build my portfolio</div><div class="task"><span class="check" onclick="this.classList.toggle('done')"></span>Create my side income</div><div class="task"><span class="check" onclick="this.classList.toggle('done')"></span>Improve my daily routine</div><div class="task"><span class="check" onclick="this.classList.toggle('done')"></span>Save money</div></div></section>
+<div class="card"><div class="cardhead"><div class="title" id="goalTitle">Main goal</div><div class="small" id="goalPct">0%</div></div><div class="progress"><div class="bar" id="goalBar" style="width:0%"></div></div><p class="small" id="goalDescription">Set your goal in Settings.</p></div>
+<div class="card"><div class="title">Goal checklist</div><div id="goalList"></div><button class="btn full" onclick="addGoal()">+ Add goal</button></div></section>
 
 <section id="notes" class="screen"><button class="back" onclick="show('home')">← Home</button><div class="pageTitle">Notes & Journal</div><div class="card"><textarea id="noteInput" placeholder="Write anything on your mind..."></textarea><button class="btn full" onclick="saveNote()">Save note</button><div id="notes"></div></div></section>
 
 <section id="progress" class="screen"><button class="back" onclick="show('home')">← Home</button><div class="pageTitle">Progress</div><div class="card"><div class="cardhead"><div class="title">This week</div><span class="pill">Growing</span></div><div class="grid2"><div class="mini"><div class="small">Tasks completed</div><b id="progTasks">0</b></div><div class="mini"><div class="small">Water today</div><b id="progWater">0 / 8</b></div><div class="mini"><div class="small">Goal progress</div><b>70%</b></div><div class="mini"><div class="small">Budget used</div><b>28%</b></div></div></div><div class="card"><div class="title">Keep going, Amali 🌷</div><p class="small">Consistency matters more than perfection.</p></div></section>
 
-<section id="settings" class="screen"><button class="back" onclick="show('home')">← Home</button><div class="pageTitle">Settings</div><div class="card"><div class="row"><span>🌷 App name</span><b>Im Amali</b></div><div class="row"><span>🎨 Theme</span><b>Soft Minimal</b></div><div class="row"><span>💾 Data</span><button class="btn" onclick="clearData()">Clear saved notes & water</button></div></div></section>
+<section id="settings" class="screen"><button class="back" onclick="show('home')">← Home</button><div class="pageTitle">Settings</div><div class="card"><div class="row"><span>🌷 App name</span><b>Im Amali</b></div><div class="row"><span>🎨 Theme</span><b>Soft Minimal</b></div><button class="btn full" onclick="openProfile()">Edit Income, Loan & Expenses</button><button class="btn full" onclick="openGoalSettings()">Edit Main Goal</button></div></section>
 </main>
 
 <nav class="nav"><button onclick="show('home',this)" class="active"><b>⌂</b>Home</button><button onclick="show('planner',this)"><b>✓</b>Tasks</button><button onclick="show('money',this)"><b>＋</b>Money</button><button onclick="show('progress',this)"><b>◌</b>Progress</button><button onclick="show('settings',this)"><b>⚙</b>Settings</button></nav>
@@ -71,57 +74,175 @@ if ('serviceWorker' in navigator) {
 }
 </script>
 
-<div id="editableSettingsModal" class="modal" style="display:none;position:fixed;inset:0;background:rgba(20,30,45,.35);z-index:9999;padding:20px;overflow:auto">
-  <div style="max-width:520px;margin:40px auto;background:#fff;border-radius:24px;padding:22px;box-shadow:0 15px 50px rgba(0,0,0,.12)">
-    <h2 style="margin:0 0 6px">Edit My Details</h2>
-    <p style="margin:0 0 18px;color:#718096">Change these anytime. They are saved on this phone.</p>
-    <div style="display:grid;gap:12px">
-      <label>Monthly income<input id="setIncome" type="number" min="0" step="0.01"></label>
-      <label>Loan balance (LKR)<input id="setLoan" type="number" min="0" step="1"></label>
-      <label>Monthly loan interest (LKR)<input id="setInterest" type="number" min="0" step="1"></label>
-      <label>Room rent<input id="setRent" type="number" min="0" step="0.01"></label>
-      <label>Transport<input id="setTransport" type="number" min="0" step="0.01"></label>
-      <label>Phone<input id="setPhone" type="number" min="0" step="0.01"></label>
-    </div>
-    <div style="display:flex;gap:10px;margin-top:18px">
-      <button id="saveProfileSettings" style="flex:1">Save changes</button>
-      <button id="closeProfileSettings" style="flex:1">Cancel</button>
-    </div>
+
+<style>.edit-grid{display:grid;gap:12px}.edit-grid label{font-size:13px;color:#52657c}.edit-grid input{margin-top:5px}.modalBtn{display:flex;gap:10px;margin-top:16px}.modalBtn button{flex:1}</style><div id="editModal" style="display:none;position:fixed;inset:0;background:rgba(20,30,45,.35);z-index:9999;padding:18px;overflow:auto"><div style="max-width:480px;margin:35px auto;background:#fff;border-radius:24px;padding:20px;box-shadow:0 15px 50px rgba(0,0,0,.12)"><h2 style="margin:0 0 5px">Edit Money</h2><p class="small">All changes update the dashboard immediately and are saved on this phone.</p><div class="edit-grid"><label>Monthly income (RM)<input id="eIncome" type="number" min="0" step="0.01"></label><label>Loan balance (LKR)<input id="eLoan" type="number" min="0" step="1"></label><label>Loan interest rate (%)<input id="eRate" type="number" min="0" step="0.01"></label><label>Loan payment (RM)<input id="eLoanPay" type="number" min="0" step="0.01"></label><label>Room rent (RM)<input id="eRent" type="number" min="0" step="0.01"></label><label>Transport (RM)<input id="eTransport" type="number" min="0" step="0.01"></label><label>Phone (RM)<input id="ePhone" type="number" min="0" step="0.01"></label><label>Other monthly expenses (RM)<input id="eOther" type="number" min="0" step="0.01"></label></div><div class="modalBtn"><button class="btn" onclick="saveProfile()">Save changes</button><button class="btn" onclick="closeModal()">Cancel</button></div></div></div>
+<div id="goalModal" style="display:none;position:fixed;inset:0;background:rgba(20,30,45,.35);z-index:9999;padding:18px"><div style="max-width:480px;margin:35px auto;background:#fff;border-radius:24px;padding:20px"><h2 style="margin:0 0 5px">Edit Main Goal</h2><div class="edit-grid"><label>Goal title<input id="gTitle"></label><label>Progress (%)<input id="gPct" type="number" min="0" max="100"></label><label>Description<input id="gDesc"></label></div><div class="modalBtn"><button class="btn" onclick="saveGoal()">Save changes</button><button class="btn" onclick="closeGoalModal()">Cancel</button></div></div></div>
+<script>
+const profileKey='imAmaliProfileV7', expenseKey='imAmaliExpensesV7', goalKey='imAmaliGoalV7';
+const defaults={income:2000,loan:525000,rate:8,loanPay:800,rent:300,transport:200,phone:60,other:0};
+let profile=load(profileKey,defaults); let expenses=load(expenseKey,[]); let goal=load(goalKey,{title:'Main goal',pct:70,desc:'Build a peaceful, independent life.'});
+function load(k,d){try{let x=JSON.parse(localStorage.getItem(k));return x??d}catch(e){return d}}
+function money(v){return 'RM '+Number(v||0).toLocaleString(undefined,{minimumFractionDigits:0,maximumFractionDigits:2})}
+function lkr(v){return 'LKR '+Number(v||0).toLocaleString()}
+function total(){return Number(profile.rent)+Number(profile.transport)+Number(profile.phone)+Number(profile.loanPay)+Number(profile.other)+expenses.reduce((a,x)=>a+Number(x),0)}
+function renderMoney(){let t=total();document.getElementById('homeIncome').textContent=money(profile.income);document.getElementById('homeExpense').textContent=money(t);document.getElementById('mIncome').textContent=money(profile.income);document.getElementById('mExpense').textContent=money(t);document.getElementById('loanBal').textContent=lkr(profile.loan);document.getElementById('interestRate').textContent=Number(profile.rate)+'%';document.getElementById('budgetRent').textContent=money(profile.rent);document.getElementById('budgetTransport').textContent=money(profile.transport);document.getElementById('budgetPhone').textContent=money(profile.phone);document.getElementById('budgetLoanPayment').textContent=money(profile.loanPay);document.getElementById('budgetOther').textContent=money(Number(profile.other)+expenses.reduce((a,x)=>a+Number(x),0));document.getElementById('budgetTotal').textContent=money(t);document.getElementById('budgetBar').style.width=(profile.income?Math.min(100,t/profile.income*100):0)+'%';renderExpenses()}
+function renderExpenses(){let el=document.getElementById('expenseList');if(!el)return;el.innerHTML=expenses.map((x,i)=>'<div class="row"><span>Extra expense '+(i+1)+'</span><span>'+money(x)+' <button onclick="removeExpense('+i+')" style="border:0;background:none">×</button></span></div>').join('')}
+function addExpense(){let i=document.getElementById('expenseInput'),v=Number(i.value);if(!v)return;expenses.push(v);localStorage.setItem(expenseKey,JSON.stringify(expenses));i.value='';renderMoney();toast('Expense added 💰')}
+function removeExpense(i){expenses.splice(i,1);localStorage.setItem(expenseKey,JSON.stringify(expenses));renderMoney()}
+function openProfile(){for(let k of ['Income','Loan','Rate','LoanPay','Rent','Transport','Phone','Other'])document.getElementById('e'+k).value=profile[{Income:'income',Loan:'loan',Rate:'rate',LoanPay:'loanPay',Rent:'rent',Transport:'transport',Phone:'phone',Other:'other'}[k]];document.getElementById('editModal').style.display='block'}
+function saveProfile(){profile={income:+eIncome.value||0,loan:+eLoan.value||0,rate:+eRate.value||0,loanPay:+eLoanPay.value||0,rent:+eRent.value||0,transport:+eTransport.value||0,phone:+ePhone.value||0,other:+eOther.value||0};localStorage.setItem(profileKey,JSON.stringify(profile));renderMoney();closeModal();toast('Money details updated ✓')}
+function closeModal(){document.getElementById('editModal').style.display='none'}
+function openGoalSettings(){gTitle.value=goal.title;gPct.value=goal.pct;gDesc.value=goal.desc;goalModal.style.display='block'}
+function saveGoal(){goal={title:gTitle.value.trim()||'Main goal',pct:Math.max(0,Math.min(100,+gPct.value||0)),desc:gDesc.value.trim()};localStorage.setItem(goalKey,JSON.stringify(goal));renderGoal();closeGoalModal();toast('Goal updated ✓')}
+function closeGoalModal(){goalModal.style.display='none'}
+function renderGoal(){goalTitle.textContent=goal.title;goalPct.textContent=goal.pct+'%';goalBar.style.width=goal.pct+'%';goalDescription.textContent=goal.desc;let h='<div class="task"><span class="check"></span>Work toward '+goal.title+'</div>';goalList.innerHTML=h}
+function addGoal(){let t=prompt('New goal');if(t){let el=document.createElement('div');el.className='task';el.innerHTML='<span class="check"></span>'+t;goalList.appendChild(el);el.querySelector('.check').onclick=()=>el.querySelector('.check').classList.toggle('done')}}
+renderMoney();renderGoal();
+</script>
+<style>
+.every-grid{display:grid;gap:10px}.every-grid h3{margin:12px 0 0;font-size:15px}.every-grid label{font-size:12px;color:#64748b}.every-grid input,.every-grid textarea{margin-top:4px}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.danger{background:#fff0f0}
+</style>
+<div id="everythingModal" style="display:none;position:fixed;inset:0;background:rgba(20,30,45,.4);z-index:10000;padding:14px;overflow:auto">
+ <div style="max-width:480px;margin:20px auto;background:#fff;border-radius:24px;padding:20px;box-shadow:0 15px 50px rgba(0,0,0,.15)">
+  <h2 style="margin:0">✦ Edit Everything</h2>
+  <p class="small">Change any personal details whenever they change. Saved on this phone.</p>
+  <div class="every-grid">
+   <h3>🌷 App & Home</h3>
+   <label>App name<input id="allAppName"></label>
+   <label>Greeting<input id="allGreeting"></label>
+   <label>Today's focus<input id="allFocus"></label>
+   <label>Avatar emoji<input id="allAvatar"></label>
+
+   <h3>⏰ Routine</h3>
+   <div class="two"><label>Morning<input id="allMorning"></label><label>Wind down<input id="allWind"></label></div>
+   <label>Work hours<input id="allWork"></label>
+
+   <h3>💰 Money & Budget</h3>
+   <div class="two"><label>Income RM<input id="allIncome" type="number" step="0.01"></label><label>Loan payment RM<input id="allLoanPay" type="number" step="0.01"></label></div>
+   <div class="two"><label>Loan balance LKR<input id="allLoan" type="number"></label><label>Interest %<input id="allRate" type="number" step="0.01"></label></div>
+   <div class="two"><label>Room rent RM<input id="allRent" type="number" step="0.01"></label><label>Transport RM<input id="allTransport" type="number" step="0.01"></label></div>
+   <div class="two"><label>Phone RM<input id="allPhone" type="number" step="0.01"></label><label>Other budget RM<input id="allOther" type="number" step="0.01"></label></div>
+   <label>Monthly budget target RM<input id="allBudget" type="number" step="0.01"></label>
+
+   <h3>🌸 Cycle</h3>
+   <div class="two"><label>Last period date<input id="allCycleDate" type="date"></label><label>Cycle length (days)<input id="allCycleLength" type="number" min="15" max="60"></label></div>
+   <label>Period length (days)<input id="allPeriodLength" type="number" min="1" max="14"></label>
+
+   <h3>💧 Health</h3>
+   <div class="two"><label>Water target (glasses)<input id="allWaterTarget" type="number" min="1"></label><label>Current weight kg<input id="allCurrentWeight" type="number" step="0.1"></label></div>
+   <label>Goal weight kg<input id="allGoalWeight" type="number" step="0.1"></label>
+
+   <h3>🍽️ Meals</h3>
+   <label>Meal style<input id="allMealStyle"></label>
+   <div class="two"><label>Breakfast<input id="allBreakfast"></label><label>Lunch<input id="allLunch"></label></div>
+   <div class="two"><label>Snack<input id="allSnack"></label><label>Dinner<input id="allDinner"></label></div>
+
+   <h3>🧴 Self-Care</h3>
+   <div class="two"><label>Habit 1<input id="allSC1"></label><label>Habit 2<input id="allSC2"></label></div>
+   <div class="two"><label>Habit 3<input id="allSC3"></label><label>Habit 4<input id="allSC4"></label></div>
+   <div class="two"><label>Weekly habit 1<input id="allWH1"></label><label>Weekly habit 2<input id="allWH2"></label></div>
+   <label>Weekly habit 3<input id="allWH3"></label>
+
+   <h3>🎯 Goal</h3>
+   <label>Main goal<input id="allGoalTitle"></label>
+   <div class="two"><label>Progress %<input id="allGoalPct" type="number" min="0" max="100"></label><label>Goal deadline<input id="allGoalDate" type="date"></label></div>
+   <label>Description<input id="allGoalDesc"></label>
+
+   <h3>📊 Progress</h3>
+   <label>Progress message<input id="allProgressMsg"></label>
   </div>
+  <div class="modalBtn" style="display:flex;gap:10px;margin-top:18px"><button class="btn" style="flex:1" onclick="saveEverything()">Save everything</button><button class="btn" style="flex:1" onclick="closeEverything()">Cancel</button></div>
+ </div>
 </div>
+
 <script>
 (function(){
- const defaults={income:2000,loan:525000,interest:52500,rent:300,transport:200,phone:60};
- const key='imAmaliProfile';
- function get(){try{return {...defaults,...JSON.parse(localStorage.getItem(key)||'{}')}}catch(e){return {...defaults}}}
- function put(){
-   const v={income:+document.getElementById('setIncome').value||0,loan:+document.getElementById('setLoan').value||0,interest:+document.getElementById('setInterest').value||0,rent:+document.getElementById('setRent').value||0,transport:+document.getElementById('setTransport').value||0,phone:+document.getElementById('setPhone').value||0};
-   localStorage.setItem(key,JSON.stringify(v)); apply(v); close(); alert('Saved ✓');
- }
+ const K='imAmaliEverythingV8';
+ const D={
+  appName:'Im Amali',greeting:'Good morning, Amali ✨',focus:'Small steps, beautiful progress.',avatar:'🌷',
+  morning:'6:00 AM',work:'8:00 AM – 10:00 PM',wind:'11:45 PM',
+  income:2000,loan:525000,rate:8,loanPay:800,rent:300,transport:200,phone:60,other:0,budget:0,
+  cycleDate:'',cycleLength:28,periodLength:5,
+  waterTarget:8,currentWeight:57,goalWeight:50,
+  mealStyle:'Balanced',breakfast:'Oats + banana',lunch:'Rice + vegetables + egg',snack:'Fruit',dinner:'Soup + protein',
+  sc1:'💧 Water & hydration',sc2:'🧴 Skin care',sc3:'💇 Hair care',sc4:'🧘 Quiet time',
+  wh1:'Skincare',wh2:'Hair care',wh3:'Exercise',
+  goalTitle:'Main goal',goalPct:70,goalDate:'',goalDesc:'Build a peaceful, independent life.',
+  progressMsg:'Consistency matters more than perfection.'
+ };
+ let data=Object.assign({},D,load());
+ function load(){try{return JSON.parse(localStorage.getItem(K)||'{}')}catch(e){return {}}}
+ function set(id,v){let e=document.getElementById(id);if(e)e.value=v??''}
+ function get(id){return document.getElementById(id)?.value??''}
  function open(){
-   const v=get();
-   ['Income','Loan','Interest','Rent','Transport','Phone'].forEach(n=>document.getElementById('set'+n).value=v[n.toLowerCase()]??0);
-   document.getElementById('editableSettingsModal').style.display='block';
+  const map={allAppName:'appName',allGreeting:'greeting',allFocus:'focus',allAvatar:'avatar',allMorning:'morning',allWork:'work',allWind:'wind',
+  allIncome:'income',allLoanPay:'loanPay',allLoan:'loan',allRate:'rate',allRent:'rent',allTransport:'transport',allPhone:'phone',allOther:'other',allBudget:'budget',
+  allCycleDate:'cycleDate',allCycleLength:'cycleLength',allPeriodLength:'periodLength',allWaterTarget:'waterTarget',allCurrentWeight:'currentWeight',allGoalWeight:'goalWeight',
+  allMealStyle:'mealStyle',allBreakfast:'breakfast',allLunch:'lunch',allSnack:'snack',allDinner:'dinner',
+  allSC1:'sc1',allSC2:'sc2',allSC3:'sc3',allSC4:'sc4',allWH1:'wh1',allWH2:'wh2',allWH3:'wh3',
+  allGoalTitle:'goalTitle',allGoalPct:'goalPct',allGoalDate:'goalDate',allGoalDesc:'goalDesc',allProgressMsg:'progressMsg'};
+  Object.keys(map).forEach(id=>set(id,data[map[id]]));document.getElementById('everythingModal').style.display='block'
  }
- function close(){document.getElementById('editableSettingsModal').style.display='none'}
- function apply(v){
-   // Replace common hard-coded displayed amounts in the current page.
-   document.querySelectorAll('[data-editable-income]').forEach(e=>e.textContent='RM '+v.income.toFixed(2));
-   document.querySelectorAll('[data-editable-loan]').forEach(e=>e.textContent='LKR '+v.loan.toLocaleString());
+ function close(){document.getElementById('everythingModal').style.display='none'}
+ function save(){
+  const map={allAppName:'appName',allGreeting:'greeting',allFocus:'focus',allAvatar:'avatar',allMorning:'morning',allWork:'work',allWind:'wind',
+  allIncome:'income',allLoanPay:'loanPay',allLoan:'loan',allRate:'rate',allRent:'rent',allTransport:'transport',allPhone:'phone',allOther:'other',allBudget:'budget',
+  allCycleDate:'cycleDate',allCycleLength:'cycleLength',allPeriodLength:'periodLength',allWaterTarget:'waterTarget',allCurrentWeight:'currentWeight',allGoalWeight:'goalWeight',
+  allMealStyle:'mealStyle',allBreakfast:'breakfast',allLunch:'lunch',allSnack:'snack',allDinner:'dinner',
+  allSC1:'sc1',allSC2:'sc2',allSC3:'sc3',allSC4:'sc4',allWH1:'wh1',allWH2:'wh2',allWH3:'wh3',
+  allGoalTitle:'goalTitle',allGoalPct:'goalPct',allGoalDate:'goalDate',allGoalDesc:'goalDesc',allProgressMsg:'progressMsg'};
+  Object.keys(map).forEach(id=>data[map[id]]=document.getElementById(id).type==='number'?Number(get(id)):get(id));
+  data.cycleLength=Math.max(15,Math.min(60,Number(data.cycleLength)||28));data.periodLength=Math.max(1,Math.min(14,Number(data.periodLength)||5));
+  localStorage.setItem(K,JSON.stringify(data)); apply(); close(); if(typeof toast==='function')toast('Everything updated ✓');
  }
- function addButton(){
-   const modal=document.getElementById('editableSettingsModal');
-   const btn=document.createElement('button');
-   btn.textContent='Edit Income & Loan';
-   btn.id='openProfileSettings';
-   btn.style.cssText='position:fixed;right:18px;bottom:82px;z-index:9998;border:0;border-radius:18px;padding:12px 16px;box-shadow:0 6px 20px rgba(0,0,0,.12)';
-   document.body.appendChild(btn); btn.onclick=open;
-   document.getElementById('saveProfileSettings').onclick=put;
-   document.getElementById('closeProfileSettings').onclick=close;
-   apply(get());
+ function esc(x){return String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+ function apply(){
+  const $=id=>document.getElementById(id);
+  if($('homeGreeting'))$('homeGreeting').textContent=data.greeting;
+  if($('focusText'))$('focusText').textContent=data.focus;
+  if($('routineMorning'))$('routineMorning').textContent=data.morning;
+  if($('routineWork'))$('routineWork').textContent=data.work;
+  if($('routineWind'))$('routineWind').textContent=data.wind;
+  if($('mealStyle'))$('mealStyle').textContent=data.mealStyle;
+  if($('mealRows'))$('mealRows').innerHTML='<div class="row"><span>🌅 Breakfast</span><span>'+esc(data.breakfast)+'</span></div><div class="row"><span>☀️ Lunch</span><span>'+esc(data.lunch)+'</span></div><div class="row"><span>🍎 Snack</span><span>'+esc(data.snack)+'</span></div><div class="row"><span>🌙 Dinner</span><span>'+esc(data.dinner)+'</span></div>';
+  if($('bodyCurrent'))$('bodyCurrent').textContent=Number(data.currentWeight)+' kg';
+  if($('bodyGoal'))$('bodyGoal').textContent=Number(data.goalWeight)+' kg';
+  if($('selfCareRows'))$('selfCareRows').innerHTML=[data.sc1,data.sc2,data.sc3,data.sc4].map(x=>'<div class="habit"><span>'+esc(x)+'</span><span class="check" onclick="this.classList.toggle(\\'done\\')"></span></div>').join('');
+  if($('weeklyHabitRows'))$('weeklyHabitRows').innerHTML=[data.wh1,data.wh2,data.wh3].map(x=>'<div class="row"><span>'+esc(x)+'</span><span>○ ○ ○ ○ ○ ○ ○</span></div>').join('');
+  if($('goalTitle'))$('goalTitle').textContent=data.goalTitle;
+  if($('goalPct'))$('goalPct').textContent=Number(data.goalPct)+'%';
+  if($('goalBar'))$('goalBar').style.width=Math.max(0,Math.min(100,Number(data.goalPct)))+'%';
+  if($('goalDescription'))$('goalDescription').textContent=data.goalDesc;
+  if($('progWater'))$('progWater').textContent=(localStorage.getItem('amaliWater')||0)+' / '+data.waterTarget;
+  if($('waterText'))$('waterText').textContent=(localStorage.getItem('amaliWater')||0)+' / '+data.waterTarget+' glasses';
+  if($('waterBar'))$('waterBar').style.width=Math.min(100,(Number(localStorage.getItem('amaliWater')||0)/data.waterTarget)*100)+'%';
+  renderCycle();
  }
- if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',addButton); else addButton();
+ function renderCycle(){
+  const last=data.cycleDate,$=id=>document.getElementById(id);
+  if(!$('cycleStatus'))return;
+  if(!last){$('cycleStatus').textContent='Set dates';$('cycleLast').textContent='Not set';$('cycleNext').textContent='Not set';$('cycleLengthText').textContent=data.cycleLength+' days';$('cycleBar').style.width='0%';return}
+  const d=new Date(last+'T00:00:00'),now=new Date();const next=new Date(d);next.setDate(d.getDate()+data.cycleLength);
+  const days=Math.floor((now-d)/86400000);const pct=Math.max(0,Math.min(100,(days/data.cycleLength)*100));
+  $('cycleLast').textContent=d.toLocaleDateString();$('cycleNext').textContent=next.toLocaleDateString();$('cycleLengthText').textContent=data.cycleLength+' days';$('cycleBar').style.width=pct+'%';
+  $('cycleStatus').textContent=days>=0&&days<data.cycleLength?'Day '+(days+1):'Next cycle';
+ }
+ window.openEverything=open;window.closeEverything=close;window.saveEverything=save;
+ apply();
 })();
 </script>
 
+<script>
+(function(){
+ const DB='imAmaliMedia', STORE='files';
+ function db(){return new Promise((res,rej)=>{let r=indexedDB.open(DB,1);r.onupgradeneeded=()=>r.result.createObjectStore(STORE,{keyPath:'id',autoIncrement:true});r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+ window.saveMediaFiles=async function(){
+  const input=document.getElementById('mediaPicker');if(!input.files.length){alert('Choose a file first');return}
+  const d=await db(),tx=d.transaction(STORE,'readwrite');for(const f of input.files)tx.objectStore(STORE).add({name:f.name,type:f.type,blob:f,date:Date.now()});tx.oncomplete=()=>{input.value='';renderMedia();toast&&toast('Media saved ✓')}
+ };
+ window.deleteMedia=async function(id){const d=await db(),tx=d.transaction(STORE,'readwrite');tx.objectStore(STORE).delete(Number(id));tx.oncomplete=renderMedia}
+ window.renderMedia=async function(){const el=document.getElementById('mediaList');if(!el)return;const d=await db(),tx=d.transaction(STORE,'readonly'),req=tx.objectStore(STORE).getAll();req.onsuccess=()=>{el.innerHTML=req.result.map(x=>'<div class="row"><span>'+x.name+'</span><button class="btn" onclick="deleteMedia('+x.id+')">Delete</button></div>').join('')||'<div class="small">No media saved yet.</div>'}}
+ renderMedia();
+})();
+</script>
 </body></html>
