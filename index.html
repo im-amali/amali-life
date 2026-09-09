@@ -65,4 +65,9 @@ let notes=JSON.parse(localStorage.getItem('amaliNotes')||'[]');function renderNo
 function updateProgress(){let n=document.querySelectorAll('#homeTasks .check.done').length;document.getElementById('taskCount').textContent=n+' / '+(base.length+custom.length);document.getElementById('plannerCount').textContent=n+' done';document.getElementById('progTasks').textContent=n;document.getElementById('progWater').textContent=waterCount+' / 8'}
 function clearData(){localStorage.removeItem('amaliNotes');localStorage.removeItem('amaliWater');localStorage.removeItem('amaliTasks');notes=[];waterCount=0;custom=[];renderNotes();renderTasks();document.getElementById('waterText').textContent='0 / 8 glasses';document.getElementById('waterBar').style.width='0%';toast('Saved data cleared')}
 renderNotes();renderTasks();if(waterCount){document.getElementById('waterText').textContent=waterCount+' / 8 glasses';document.getElementById('waterBar').style.width=waterCount/8*100+'%'}updateProgress();
-</script></body></html>
+</script><script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+}
+</script>
+</body></html>
