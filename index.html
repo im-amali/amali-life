@@ -245,4 +245,16 @@ renderMoney();renderGoal();
  renderMedia();
 })();
 </script>
+
+<script>
+(function(){
+  window.imAmaliSaveEdit = function(){
+    const ids = ['income','loanPayment','loanBalance','interest','transport','phone','rent','otherBudget'];
+    const data = {};
+    ids.forEach(id => { const e=document.getElementById(id); if(e) data[id]=e.value; });
+    localStorage.setItem('imAmaliEditableMoney', JSON.stringify(data));
+  };
+})();
+</script>
+
 </body></html>
