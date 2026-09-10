@@ -408,40 +408,50 @@ setTimeout(renderPayments,0);
 </script>
 
 <div id="journalModal" style="display:none;position:fixed;inset:0;background:rgba(20,30,45,.35);z-index:10020;padding:12px;overflow:auto">
-<div style="max-width:700px;margin:10px auto;background:#fff;border-radius:26px;padding:18px">
+<div style="max-width:760px;margin:10px auto;background:#fff;border-radius:26px;padding:18px">
 <div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">Daily Journal ✨</h2><button class="btn" onclick="closeJournal()">Close</button></div>
-<div class="small" style="margin:6px 0 12px">Write how you feel today. Add mood, stickers, doodles, icons, photos and a gentle paper background.</div>
+<div id="journalHome">
+<div class="small" style="margin:6px 0 12px">Every saved journal becomes a separate page with its own date and time. Your old pages stay saved.</div>
+<button class="btn full" onclick="newJournalPage()">＋ New journal page</button>
+<div id="journalRecords" style="margin-top:14px"></div>
+</div>
+<div id="journalEditor" style="display:none">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><button class="btn" onclick="showJournalHome()">← All pages</button><span id="journalDateTime" class="small"></span></div>
 <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px">
 <button class="btn" onclick="setJournalMood('😊')">😊</button><button class="btn" onclick="setJournalMood('🥰')">🥰</button><button class="btn" onclick="setJournalMood('😌')">😌</button><button class="btn" onclick="setJournalMood('😔')">😔</button><button class="btn" onclick="setJournalMood('😤')">😤</button><button class="btn" onclick="setJournalMood('❤️')">❤️</button>
 </div>
 <div id="journalPaper" style="border-radius:20px;padding:14px;min-height:330px;background-color:#fffdf8;background-image:radial-gradient(#dbeaf2 1px,transparent 1px);background-size:18px 18px">
 <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><span id="journalMood" style="font-size:28px">😊</span><input id="journalTitle" placeholder="Today's title" style="flex:1;padding:10px;border:1px solid #dce5ec;border-radius:12px"></div>
 <textarea id="journalText" placeholder="How did you feel today? What happened? What are you grateful for?" style="width:100%;min-height:180px;box-sizing:border-box;padding:12px;border:1px solid #dce5ec;border-radius:14px;background:rgba(255,255,255,.78);font-size:15px"></textarea>
-<div id="journalDecor" style="min-height:35px;padding:8px 0;font-size:25px"></div>
-<div id="journalImages" style="display:flex;gap:8px;flex-wrap:wrap"></div>
-</div>
+<div id="journalDecor" style="min-height:35px;padding:8px 0;font-size:25px"></div><div id="journalImages" style="display:flex;gap:8px;flex-wrap:wrap"></div></div>
 <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:10px">
-<button class="btn" onclick="addJournalSticker('🌸')">🌸</button><button class="btn" onclick="addJournalSticker('🦋')">🦋</button><button class="btn" onclick="addJournalSticker('✨')">✨</button><button class="btn" onclick="addJournalSticker('🌿')">🌿</button><button class="btn" onclick="addJournalSticker('☁️')">☁️</button><button class="btn" onclick="addJournalSticker('🎀')">🎀</button>
-<button class="btn" onclick="addJournalSticker('♡')">♡</button><button class="btn" onclick="addJournalSticker('✦')">✦</button>
-<label class="btn" style="cursor:pointer">Add image<input id="journalImageInput" type="file" accept="image/*" multiple style="display:none" onchange="addJournalImages(this.files)"></label>
-</div>
-<div style="display:flex;gap:8px;margin-top:12px"><button class="btn" onclick="clearJournalDecor()">Clear stickers/images</button><button class="btn" style="flex:1" onclick="saveJournal()">Save today's journal ✓</button></div>
-</div></div>
+<button class="btn" onclick="addJournalSticker('🌸')">🌸</button><button class="btn" onclick="addJournalSticker('🦋')">🦋</button><button class="btn" onclick="addJournalSticker('✨')">✨</button><button class="btn" onclick="addJournalSticker('🌿')">🌿</button><button class="btn" onclick="addJournalSticker('☁️')">☁️</button><button class="btn" onclick="addJournalSticker('🎀')">🎀</button><button class="btn" onclick="addJournalSticker('♡')">♡</button><button class="btn" onclick="addJournalSticker('✦')">✦</button>
+<label class="btn" style="cursor:pointer">Add image<input id="journalImageInput" type="file" accept="image/*" multiple style="display:none" onchange="addJournalImages(this.files)"></label></div>
+<div style="display:flex;gap:8px;margin-top:12px"><button class="btn" onclick="clearJournalDecor()">Clear stickers/images</button><button class="btn" onclick="downloadCurrentJournalImage()">Download as image</button><button class="btn" style="flex:1" onclick="saveJournal()">Save journal page ✓</button></div>
+</div></div></div>
 <script>
 (function(){
-const JK='imAmaliDailyJournalV1';
-function dayKey(){let d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
-function allJ(){try{return JSON.parse(localStorage.getItem(JK)||'{}')}catch(e){return {}}}
-function saveAllJ(x){localStorage.setItem(JK,JSON.stringify(x))}
-function escJ(x){return String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-window.openJournal=function(){let d=allJ()[dayKey()]||{mood:'😊',title:'',text:'',stickers:[],images:[]};journalMood.textContent=d.mood||'😊';journalTitle.value=d.title||'';journalText.value=d.text||'';journalDecor.textContent=(d.stickers||[]).join(' ');journalImages.innerHTML=(d.images||[]).map(x=>'<img src="'+x+'" style="width:90px;height:70px;object-fit:cover;border-radius:12px">').join('');journalModal.style.display='block'}
-window.closeJournal=function(){journalModal.style.display='none'}
-window.setJournalMood=function(x){journalMood.textContent=x}
-window.addJournalSticker=function(x){journalDecor.textContent+=(journalDecor.textContent?' ':'')+x}
-window.clearJournalDecor=function(){journalDecor.textContent='';journalImages.innerHTML=''}
+const JK='imAmaliDailyJournalV2'; const OLD='imAmaliDailyJournalV1'; let currentId=null, currentCreated=null;
+function uid(){return Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8)}
+function now(){return new Date()}
+function fmt(ts){return new Date(ts).toLocaleString([], {year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})}
+function allJ(){try{let a=JSON.parse(localStorage.getItem(JK)||'[]'); if(Array.isArray(a)) return a; }catch(e){}; return migrateOld()}
+function migrateOld(){let out=[]; try{let o=JSON.parse(localStorage.getItem(OLD)||'{}'); Object.keys(o).forEach(k=>{let d=o[k]; out.push({id:uid(),createdAt:d.savedAt||k+'T12:00:00',mood:d.mood||'😊',title:d.title||'',text:d.text||'',stickers:d.stickers||[],images:d.images||[]});});}catch(e){} localStorage.setItem(JK,JSON.stringify(out)); return out}
+function saveAll(a){localStorage.setItem(JK,JSON.stringify(a))}
+function esc(x){return String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function renderRecords(){let a=allJ().sort((x,y)=>new Date(y.createdAt)-new Date(x.createdAt)); let box=document.getElementById('journalRecords'); if(!a.length){box.innerHTML='<div class="small" style="text-align:center;padding:25px">No journal pages yet. Start your first page ✨</div>';return} box.innerHTML=a.map(d=>`<div class="card" style="margin:8px 0;padding:12px"><div style="display:flex;gap:10px;align-items:center"><span style="font-size:28px">${esc(d.mood||'😊')}</span><div style="flex:1"><b>${esc(d.title||'Untitled journal')}</b><div class="small">${esc(fmt(d.createdAt))}</div><div class="small" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(d.text||'')}</div></div><button class="btn" onclick="openJournalPage('${d.id}')">Open</button></div></div>`).join('')}
+window.openJournal=function(){document.getElementById('journalModal').style.display='block';showJournalHome()}
+window.closeJournal=function(){document.getElementById('journalModal').style.display='none'}
+window.showJournalHome=function(){document.getElementById('journalHome').style.display='block';document.getElementById('journalEditor').style.display='none';currentId=null;renderRecords()}
+window.newJournalPage=function(){currentId=null;currentCreated=now().toISOString(); journalMood.textContent='😊';journalTitle.value='';journalText.value='';journalDecor.textContent='';journalImages.innerHTML='';journalDateTime.textContent=fmt(currentCreated);document.getElementById('journalHome').style.display='none';document.getElementById('journalEditor').style.display='block'}
+window.openJournalPage=function(id){let d=allJ().find(x=>x.id===id);if(!d)return;currentId=id;currentCreated=d.createdAt;journalMood.textContent=d.mood||'😊';journalTitle.value=d.title||'';journalText.value=d.text||'';journalDecor.textContent=(d.stickers||[]).join(' ');journalImages.innerHTML=(d.images||[]).map(x=>'<img src="'+x+'" style="width:90px;height:70px;object-fit:cover;border-radius:12px">').join('');journalDateTime.textContent=fmt(d.createdAt);document.getElementById('journalHome').style.display='none';document.getElementById('journalEditor').style.display='block'}
+window.setJournalMood=x=>journalMood.textContent=x
+window.addJournalSticker=x=>journalDecor.textContent+=(journalDecor.textContent?' ':'')+x
+window.clearJournalDecor=()=>{journalDecor.textContent='';journalImages.innerHTML=''}
 window.addJournalImages=function(files){Array.from(files||[]).forEach(f=>{let r=new FileReader();r.onload=()=>{let im=document.createElement('img');im.src=r.result;im.style.cssText='width:90px;height:70px;object-fit:cover;border-radius:12px';journalImages.appendChild(im)};r.readAsDataURL(f)})}
-window.saveJournal=function(){let imgs=Array.from(journalImages.querySelectorAll('img')).map(x=>x.src);let stickers=journalDecor.textContent.trim().split(/\s+/).filter(Boolean);let a=allJ();a[dayKey()]={mood:journalMood.textContent,title:journalTitle.value,text:journalText.value,stickers,images:imgs,savedAt:new Date().toISOString()};saveAllJ(a);closeJournal();if(typeof toast==='function')toast('Journal saved ✓')}
-window.loadJournalToday=function(){let a=allJ(),d=a[dayKey()];return d||null}
+window.saveJournal=function(){let a=allJ();let d={id:currentId||uid(),createdAt:currentCreated||now().toISOString(),updatedAt:now().toISOString(),mood:journalMood.textContent,title:journalTitle.value.trim(),text:journalText.value,stickers:journalDecor.textContent.trim().split(/\s+/).filter(Boolean),images:Array.from(journalImages.querySelectorAll('img')).map(x=>x.src)};let i=a.findIndex(x=>x.id===d.id);if(i>=0)a[i]=d;else a.push(d);saveAll(a);if(typeof toast==='function')toast('Journal page saved ✓');showJournalHome()}
+window.loadJournalToday=function(){let a=allJ();return a.find(x=>new Date(x.createdAt).toDateString()===now().toDateString())||null}
+window.downloadCurrentJournalImage=async function(){let canvas=document.createElement('canvas'),ctx=canvas.getContext('2d'),W=1080,P=70;canvas.width=W;let text=(journalText.value||'').trim(),title=journalTitle.value.trim()||'Untitled journal',decor=journalDecor.textContent||'';let lines=[];ctx.font='32px sans-serif';let words=text.split(/\s+/),line='';words.forEach(w=>{let t=line?line+' '+w:w;if(ctx.measureText(t).width>W-P*2){lines.push(line);line=w}else line=t});if(line)lines.push(line);let imgs=Array.from(journalImages.querySelectorAll('img'));canvas.height=250+Math.max(1,lines.length)*48+100+(imgs.length?250:0);ctx.fillStyle='#fffdf8';ctx.fillRect(0,0,W,canvas.height);ctx.fillStyle='#dbeaf2';for(let y=25;y<canvas.height;y+=42)for(let x=25;x<W;x+=42){ctx.beginPath();ctx.arc(x,y,2,0,Math.PI*2);ctx.fill()}ctx.fillStyle='#263746';ctx.font='46px sans-serif';ctx.fillText(journalMood.textContent||'😊',P,85);ctx.font='bold 40px sans-serif';ctx.fillText(title,P+75,85);ctx.font='22px sans-serif';ctx.fillText(fmt(currentCreated||now()),P,130);ctx.font='32px sans-serif';let yy=195;lines.forEach(l=>{ctx.fillText(l,P,yy);yy+=48});ctx.font='34px sans-serif';ctx.fillText(decor,P,yy+25);yy+=75;for(let im of imgs){let iw=im.naturalWidth||90,ih=im.naturalHeight||70,scale=Math.min((W-P*2)/iw,220/ih);ctx.drawImage(im,P,yy,iw*scale,ih*scale);yy+=ih*scale+20}let a=document.createElement('a');a.download='Im-Amali-Journal-'+(new Date(currentCreated||now()).toISOString().slice(0,10))+'.png';a.href=canvas.toDataURL('image/png');a.click();if(typeof toast==='function')toast('Journal image downloaded ✓')}
 })();
 </script>
 
