@@ -27,7 +27,7 @@
 <div class="row"><span>💼 Work</span><b id="routineWork">8:00 AM – 10:00 PM</b></div>
 <div class="row"><span>🌙 Wind down</span><b id="routineWind">11:45 PM</b></div>
 </div></section>
-<section id="money" class="screen"><button class="back" onclick="show('home')">← Home</button><div class="pageTitle">Money & Loan</div>
+<section id="money" class="screen"><button class="back" onclick="show('home')">← Home</button><div class="pageTitle">Money & Loan</div><button class="btn" style="margin:0 0 14px" onclick="openProfile()">Edit money & loan</button>
 <div class="card"><div class="grid2"><div class="mini"><div class="small">Income</div><b id="mIncome">RM 0</b></div><div class="mini"><div class="small">Monthly expenses</div><b id="mExpense">RM 0</b></div><div class="mini"><div class="small">Loan balance</div><b id="loanBal">LKR 0</b></div><div class="mini"><div class="small">Interest rate</div><b id="interestRate">0%</b></div></div></div>
 <div class="card"><div class="title">Monthly budget</div><div class="row"><span>Room rent</span><b id="budgetRent">RM 0</b></div><div class="row"><span>Transport</span><b id="budgetTransport">RM 0</b></div><div class="row"><span>Phone</span><b id="budgetPhone">RM 0</b></div><div class="row"><span>Loan payment</span><b id="budgetLoanPayment">RM 0</b></div><div class="row"><span>Other expenses</span><b id="budgetOther">RM 0</b></div><div class="row"><span><b>Total monthly expenses</b></span><b id="budgetTotal">RM 0</b></div></div>
 <div class="card"><div class="title">Add expense</div><div class="addbox"><input id="expenseInput" type="number" placeholder="RM amount"><button class="btn" onclick="addExpense()">Add</button></div><div id="expenseList"></div></div></section>
@@ -63,7 +63,7 @@ function taskHTML(t){return '<div class="task"><span class="check"></span>'+t+'<
 function renderTasks(){document.getElementById('homeTasks').innerHTML=base.map(taskHTML).join('')+custom.map(taskHTML).join('');document.querySelectorAll('#homeTasks .check').forEach(c=>c.onclick=()=>{c.classList.toggle('done');updateProgress()});document.getElementById('tasks').innerHTML=custom.map(taskHTML).join('')||'<div class="small" style="padding-top:14px">Your added tasks will appear here.</div>';document.querySelectorAll('#tasks .check').forEach(c=>c.onclick=()=>c.classList.toggle('done'));updateProgress()}
 function addTask(){let i=document.getElementById('taskInput'),v=i.value.trim();if(!v)return;custom.push(v);localStorage.setItem('amaliTasks',JSON.stringify(custom));i.value='';renderTasks();toast('Task added ✨')}
 let waterCount=Number(localStorage.getItem('amaliWater')||0);function water(){waterCount=Math.min(8,waterCount+1);localStorage.setItem('amaliWater',waterCount);document.getElementById('waterText').textContent=waterCount+' / 8 glasses';document.getElementById('waterBar').style.width=waterCount/8*100+'%';updateProgress()}
-let expenses=560;function addExpense(){let v=Number(document.getElementById('expenseInput').value);if(!v)return;expenses+=v;document.getElementById('expenseInput').value='';document.getElementById('mExpense').textContent='RM '+expenses.toFixed(0);document.getElementById('homeExpense').textContent='RM '+expenses.toFixed(0);document.getElementById('budgetBar').style.width=Math.min(100,expenses/2000*100)+'%';toast('Expense added 💰')}
+
 let notes=JSON.parse(localStorage.getItem('amaliNotes')||'[]');function renderNotes(){document.getElementById('notes').innerHTML=notes.map(n=>'<div class="note">'+n+'</div>').join('')}function saveNote(){let i=document.getElementById('noteInput'),v=i.value.trim();if(!v)return;notes.unshift(v);localStorage.setItem('amaliNotes',JSON.stringify(notes));i.value='';renderNotes();toast('Note saved 🌷')}
 function updateProgress(){let n=document.querySelectorAll('#homeTasks .check.done').length;document.getElementById('taskCount').textContent=n+' / '+(base.length+custom.length);document.getElementById('plannerCount').textContent=n+' done';document.getElementById('progTasks').textContent=n;document.getElementById('progWater').textContent=waterCount+' / 8'}
 function clearData(){localStorage.removeItem('amaliNotes');localStorage.removeItem('amaliWater');localStorage.removeItem('amaliTasks');notes=[];waterCount=0;custom=[];renderNotes();renderTasks();document.getElementById('waterText').textContent='0 / 8 glasses';document.getElementById('waterBar').style.width='0%';toast('Saved data cleared')}
@@ -79,18 +79,61 @@ if ('serviceWorker' in navigator) {
 <div id="goalModal" style="display:none;position:fixed;inset:0;background:rgba(20,30,45,.35);z-index:9999;padding:18px"><div style="max-width:480px;margin:35px auto;background:#fff;border-radius:24px;padding:20px"><h2 style="margin:0 0 5px">Edit Main Goal</h2><div class="edit-grid"><label>Goal title<input id="gTitle"></label><label>Progress (%)<input id="gPct" type="number" min="0" max="100"></label><label>Description<input id="gDesc"></label></div><div class="modalBtn"><button class="btn" onclick="saveGoal()">Save changes</button><button class="btn" onclick="closeGoalModal()">Cancel</button></div></div></div>
 <script>
 const profileKey='imAmaliProfileV7', expenseKey='imAmaliExpensesV7', goalKey='imAmaliGoalV7';
+
 const defaults={income:2000,loan:525000,rate:8,loanPay:800,rent:300,transport:200,phone:60,other:0};
-let profile=load(profileKey,defaults); let expenses=load(expenseKey,[]); let goal=load(goalKey,{title:'Main goal',pct:70,desc:'Build a peaceful, independent life.'});
 function load(k,d){try{let x=JSON.parse(localStorage.getItem(k));return x??d}catch(e){return d}}
 function money(v){return 'RM '+Number(v||0).toLocaleString(undefined,{minimumFractionDigits:0,maximumFractionDigits:2})}
 function lkr(v){return 'LKR '+Number(v||0).toLocaleString()}
+const CANON='imAmaliCanonicalMoney';
+let profile=Object.assign({},defaults,load(profileKey,{}));
+let expenses=load(expenseKey,[]);
+let goal=load(goalKey,{title:'Main goal',pct:70,desc:'Build a peaceful, independent life.'});
+
+(function repairAndMigrate(){
+  try{
+    let c=JSON.parse(localStorage.getItem(CANON)||'null');
+    let old=JSON.parse(localStorage.getItem('imAmaliEverythingV8')||'null');
+    if(c && typeof c==='object'){
+      profile=Object.assign({},defaults,c);
+    }else if(old && typeof old==='object' && Object.keys(old).some(k=>['income','loan','rate','loanPay','rent','transport','phone','other'].includes(k))){
+      let candidate={income:Number(old.income),loan:Number(old.loan),rate:Number(old.rate),loanPay:Number(old.loanPay),rent:Number(old.rent),transport:Number(old.transport),phone:Number(old.phone),other:Number(old.other)};
+      let zero=['income','loan','rate','loanPay','rent','transport','phone'].every(k=>candidate[k]===0);
+      profile=zero?{...defaults}:Object.assign({},defaults,candidate);
+    }else{
+      let p=load(profileKey,null);
+      profile=p&&typeof p==='object'?Object.assign({},defaults,p):{...defaults};
+    }
+    // Never allow a broken all-zero migration to overwrite the real defaults.
+    if(['income','loan','rate','loanPay','rent','transport','phone'].every(k=>Number(profile[k])===0)) profile={...defaults};
+    localStorage.setItem(CANON,JSON.stringify(profile));
+    localStorage.setItem(profileKey,JSON.stringify(profile));
+  }catch(e){profile={...defaults}}
+})();
+
 function total(){return Number(profile.rent)+Number(profile.transport)+Number(profile.phone)+Number(profile.loanPay)+Number(profile.other)+expenses.reduce((a,x)=>a+Number(x),0)}
-function renderMoney(){let t=total();document.getElementById('homeIncome').textContent=money(profile.income);document.getElementById('homeExpense').textContent=money(t);document.getElementById('mIncome').textContent=money(profile.income);document.getElementById('mExpense').textContent=money(t);document.getElementById('loanBal').textContent=lkr(profile.loan);document.getElementById('interestRate').textContent=Number(profile.rate)+'%';document.getElementById('budgetRent').textContent=money(profile.rent);document.getElementById('budgetTransport').textContent=money(profile.transport);document.getElementById('budgetPhone').textContent=money(profile.phone);document.getElementById('budgetLoanPayment').textContent=money(profile.loanPay);document.getElementById('budgetOther').textContent=money(Number(profile.other)+expenses.reduce((a,x)=>a+Number(x),0));document.getElementById('budgetTotal').textContent=money(t);document.getElementById('budgetBar').style.width=(profile.income?Math.min(100,t/profile.income*100):0)+'%';renderExpenses()}
+function renderMoney(){
+  let t=total();
+  const put=(id,v)=>{let e=document.getElementById(id);if(e)e.textContent=v};
+  put('homeIncome',money(profile.income));put('homeExpense',money(t));
+  put('mIncome',money(profile.income));put('mExpense',money(t));
+  put('loanBal',lkr(profile.loan));put('interestRate',Number(profile.rate)+'%');
+  put('budgetRent',money(profile.rent));put('budgetTransport',money(profile.transport));put('budgetPhone',money(profile.phone));
+  put('budgetLoanPayment',money(profile.loanPay));put('budgetOther',money(Number(profile.other)+expenses.reduce((a,x)=>a+Number(x),0)));
+  put('budgetTotal',money(t));
+  let bar=document.getElementById('budgetBar');if(bar)bar.style.width=(profile.income?Math.min(100,t/profile.income*100):0)+'%';
+  renderExpenses();
+}
 function renderExpenses(){let el=document.getElementById('expenseList');if(!el)return;el.innerHTML=expenses.map((x,i)=>'<div class="row"><span>Extra expense '+(i+1)+'</span><span>'+money(x)+' <button onclick="removeExpense('+i+')" style="border:0;background:none">×</button></span></div>').join('')}
 function addExpense(){let i=document.getElementById('expenseInput'),v=Number(i.value);if(!v)return;expenses.push(v);localStorage.setItem(expenseKey,JSON.stringify(expenses));i.value='';renderMoney();toast('Expense added 💰')}
 function removeExpense(i){expenses.splice(i,1);localStorage.setItem(expenseKey,JSON.stringify(expenses));renderMoney()}
-function openProfile(){for(let k of ['Income','Loan','Rate','LoanPay','Rent','Transport','Phone','Other'])document.getElementById('e'+k).value=profile[{Income:'income',Loan:'loan',Rate:'rate',LoanPay:'loanPay',Rent:'rent',Transport:'transport',Phone:'phone',Other:'other'}[k]];document.getElementById('editModal').style.display='block'}
-function saveProfile(){profile={income:+eIncome.value||0,loan:+eLoan.value||0,rate:+eRate.value||0,loanPay:+eLoanPay.value||0,rent:+eRent.value||0,transport:+eTransport.value||0,phone:+ePhone.value||0,other:+eOther.value||0};localStorage.setItem(profileKey,JSON.stringify(profile));renderMoney();closeModal();toast('Money details updated ✓')}
+function openProfile(){['Income','Loan','Rate','LoanPay','Rent','Transport','Phone','Other'].forEach(k=>{let e=document.getElementById('e'+k);if(e)e.value=profile[{Income:'income',Loan:'loan',Rate:'rate',LoanPay:'loanPay',Rent:'rent',Transport:'transport',Phone:'phone',Other:'other'}[k]]});document.getElementById('editModal').style.display='block'}
+function saveProfile(){
+  profile={income:Number(eIncome.value)||0,loan:Number(eLoan.value)||0,rate:Number(eRate.value)||0,loanPay:Number(eLoanPay.value)||0,rent:Number(eRent.value)||0,transport:Number(eTransport.value)||0,phone:Number(ePhone.value)||0,other:Number(eOther.value)||0};
+  localStorage.setItem(CANON,JSON.stringify(profile));localStorage.setItem(profileKey,JSON.stringify(profile));
+  // Keep the master editor synchronized too.
+  try{let d=JSON.parse(localStorage.getItem('imAmaliEverythingV8')||'{}');Object.assign(d,profile);localStorage.setItem('imAmaliEverythingV8',JSON.stringify(d))}catch(e){}
+  renderMoney();closeModal();toast('Money details updated ✓')
+}
 function closeModal(){document.getElementById('editModal').style.display='none'}
 function openGoalSettings(){gTitle.value=goal.title;gPct.value=goal.pct;gDesc.value=goal.desc;goalModal.style.display='block'}
 function saveGoal(){goal={title:gTitle.value.trim()||'Main goal',pct:Math.max(0,Math.min(100,+gPct.value||0)),desc:gDesc.value.trim()};localStorage.setItem(goalKey,JSON.stringify(goal));renderGoal();closeGoalModal();toast('Goal updated ✓')}
@@ -98,6 +141,7 @@ function closeGoalModal(){goalModal.style.display='none'}
 function renderGoal(){goalTitle.textContent=goal.title;goalPct.textContent=goal.pct+'%';goalBar.style.width=goal.pct+'%';goalDescription.textContent=goal.desc;let h='<div class="task"><span class="check"></span>Work toward '+goal.title+'</div>';goalList.innerHTML=h}
 function addGoal(){let t=prompt('New goal');if(t){let el=document.createElement('div');el.className='task';el.innerHTML='<span class="check"></span>'+t;goalList.appendChild(el);el.querySelector('.check').onclick=()=>el.querySelector('.check').classList.toggle('done')}}
 renderMoney();renderGoal();
+
 </script>
 <style>
 .every-grid{display:grid;gap:10px}.every-grid h3{margin:12px 0 0;font-size:15px}.every-grid label{font-size:12px;color:#64748b}.every-grid input,.every-grid textarea{margin-top:4px}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.danger{background:#fff0f0}
@@ -194,6 +238,11 @@ renderMoney();renderGoal();
   Object.keys(map).forEach(id=>data[map[id]]=document.getElementById(id).type==='number'?Number(get(id)):get(id));
   data.cycleLength=Math.max(15,Math.min(60,Number(data.cycleLength)||28));data.periodLength=Math.max(1,Math.min(14,Number(data.periodLength)||5));
   localStorage.setItem(K,JSON.stringify(data));
+  localStorage.setItem('imAmaliCanonicalMoney',JSON.stringify({
+    income:Number(data.income)||0,loan:Number(data.loan)||0,rate:Number(data.rate)||0,
+    loanPay:Number(data.loanPay)||0,rent:Number(data.rent)||0,
+    transport:Number(data.transport)||0,phone:Number(data.phone)||0,other:Number(data.other)||0
+  }));
   // Sync the values used by the Money & Loan screen.
   localStorage.setItem('imAmaliProfileV7',JSON.stringify({
     income:Number(data.income)||0, loan:Number(data.loan)||0, rate:Number(data.rate)||0,
@@ -218,7 +267,7 @@ renderMoney();renderGoal();
   if($('mealRows'))$('mealRows').innerHTML='<div class="row"><span>🌅 Breakfast</span><span>'+esc(data.breakfast)+'</span></div><div class="row"><span>☀️ Lunch</span><span>'+esc(data.lunch)+'</span></div><div class="row"><span>🍎 Snack</span><span>'+esc(data.snack)+'</span></div><div class="row"><span>🌙 Dinner</span><span>'+esc(data.dinner)+'</span></div>';
   if($('bodyCurrent'))$('bodyCurrent').textContent=Number(data.currentWeight)+' kg';
   if($('bodyGoal'))$('bodyGoal').textContent=Number(data.goalWeight)+' kg';
-  if($('selfCareRows'))$('selfCareRows').innerHTML=[data.sc1,data.sc2,data.sc3,data.sc4].map(x=>'<div class="habit"><span>'+esc(x)+'</span><span class="check" onclick="this.classList.toggle(\\'done\\')"></span></div>').join('');
+  if($('selfCareRows'))$('selfCareRows').innerHTML=[data.sc1,data.sc2,data.sc3,data.sc4].map(x=>'<div class="habit"><span>'+esc(x)+'</span><span class="check" onclick="this.classList.toggle(\'done\')"></span></div>').join('');
   if($('weeklyHabitRows'))$('weeklyHabitRows').innerHTML=[data.wh1,data.wh2,data.wh3].map(x=>'<div class="row"><span>'+esc(x)+'</span><span>○ ○ ○ ○ ○ ○ ○</span></div>').join('');
   if($('goalTitle'))$('goalTitle').textContent=data.goalTitle;
   if($('goalPct'))$('goalPct').textContent=Number(data.goalPct)+'%';
