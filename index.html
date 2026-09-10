@@ -30,6 +30,24 @@
 <section id="money" class="screen"><button class="back" onclick="show('home')">← Home</button><div class="pageTitle">Money & Loan</div><button class="btn" style="margin:0 0 14px" onclick="openProfile()">Edit money & loan</button>
 <div class="card"><div class="grid2"><div class="mini"><div class="small">Income</div><b id="mIncome">RM 0</b></div><div class="mini"><div class="small">Monthly expenses</div><b id="mExpense">RM 0</b></div><div class="mini"><div class="small">Loan balance</div><b id="loanBal">LKR 0</b></div><div class="mini"><div class="small">Interest rate</div><b id="interestRate">0%</b></div></div></div>
 <div class="card"><div class="title">Monthly budget</div><div class="row"><span>Room rent</span><b id="budgetRent">RM 0</b></div><div class="row"><span>Transport</span><b id="budgetTransport">RM 0</b></div><div class="row"><span>Phone</span><b id="budgetPhone">RM 0</b></div><div class="row"><span>Loan payment</span><b id="budgetLoanPayment">RM 0</b></div><div class="row"><span>Other expenses</span><b id="budgetOther">RM 0</b></div><div class="row"><span><b>Total monthly expenses</b></span><b id="budgetTotal">RM 0</b></div></div>
+<div class="card">
+<div class="cardhead"><div class="title">Available balance</div><span class="pill" id="balanceStatus">After paid bills</span></div>
+<div style="font-size:30px;font-weight:700;margin:8px 0" id="availableBalance">RM 0</div>
+<div class="small">Income minus the payments you have marked as paid.</div>
+<div style="height:8px;background:#edf3f7;border-radius:8px;margin-top:12px"><div id="balanceBar" style="height:8px;width:0%;border-radius:8px;background:#a9d7ee"></div></div>
+</div>
+<div class="card">
+<div class="cardhead"><div class="title">Monthly payments</div><span class="pill" id="paidSummary">0 / 6 paid</span></div>
+<p class="small" style="margin-top:0">Tick each bill after you pay it. Paid status is saved for this month and resets automatically next month.</p>
+<div id="paymentList"></div>
+<button class="btn full" onclick="openPaymentEditor()">Edit payment list</button>
+</div>
+<div id="paymentEditor" style="display:none;position:fixed;inset:0;background:rgba(20,30,45,.35);z-index:10001;padding:16px;overflow:auto">
+<div style="max-width:480px;margin:25px auto;background:#fff;border-radius:24px;padding:20px">
+<h2 style="margin:0">Edit monthly payments</h2><p class="small">Change the name and amount of every recurring payment.</p>
+<div id="paymentEditRows"></div>
+<div class="modalBtn"><button class="btn" onclick="savePaymentEditor()">Save</button><button class="btn" onclick="closePaymentEditor()">Cancel</button></div>
+</div></div>
 <div class="card"><div class="title">Add expense</div><div class="addbox"><input id="expenseInput" type="number" placeholder="RM amount"><button class="btn" onclick="addExpense()">Add</button></div><div id="expenseList"></div></div></section>
 
 <section id="health" class="screen"><button class="back" onclick="show('home')">← Home</button><div class="pageTitle">Health & Meals</div>
@@ -49,28 +67,44 @@
 
 <section id="progress" class="screen"><button class="back" onclick="show('home')">← Home</button><div class="pageTitle">Progress</div><div class="card"><div class="cardhead"><div class="title">This week</div><span class="pill">Growing</span></div><div class="grid2"><div class="mini"><div class="small">Tasks completed</div><b id="progTasks">0</b></div><div class="mini"><div class="small">Water today</div><b id="progWater">0 / 8</b></div><div class="mini"><div class="small">Goal progress</div><b>70%</b></div><div class="mini"><div class="small">Budget used</div><b>28%</b></div></div></div><div class="card"><div class="title">Keep going, Amali 🌷</div><p class="small">Consistency matters more than perfection.</p></div></section>
 
-<section id="settings" class="screen"><button class="back" onclick="show('home')">← Home</button><div class="pageTitle">Settings</div><div class="card"><div class="row"><span>🌷 App name</span><b>Im Amali</b></div><div class="row"><span>🎨 Theme</span><b>Soft Minimal</b></div><button class="btn full" onclick="openEverything()">Edit Everything</button><button class="btn full" onclick="openGoalSettings()">Edit Main Goal</button></div></section>
+<section id="settings" class="screen"><button class="back" onclick="show('home')">← Home</button><div class="pageTitle">Settings</div><div class="card"><div class="row"><span>🌷 App name</span><b>Im Amali</b></div><div class="row"><span>🎨 Theme</span><b>Soft Minimal</b></div><button class="btn full" onclick="openEverything()">Edit Everything</button><button class="btn full" onclick="openGoalSettings()">Edit Main Goal</button></div>
+<div class="card">
+  <div class="title">Google Drive Backup</div>
+  <p class="small">Back up your Im Amali data to your own Google Drive and restore it on a new phone.</p>
+  <input id="googleClientId" placeholder="Google OAuth Web Client ID" style="width:100%;box-sizing:border-box;padding:11px;border:1px solid #dce5ec;border-radius:12px;margin:8px 0">
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <button class="btn" onclick="imGoogleBackup()">☁️ Backup to Drive</button>
+    <button class="btn" onclick="imGoogleRestore()">↩️ Restore from Drive</button>
+  </div>
+  <div id="googleBackupStatus" class="small" style="margin-top:8px"></div>
+</div>
+</section>
 </main>
 
-<nav class="nav"><button onclick="show('home',this)" class="active"><b>⌂</b>Home</button><button onclick="show('planner',this)"><b>✓</b>Tasks</button><button onclick="show('money',this)"><b>＋</b>Money</button><button onclick="show('progress',this)"><b>◌</b>Progress</button><button onclick="show('settings',this)"><b>⚙</b>Settings</button></nav>
+<button class="btn" style="margin:12px" onclick="openJournal()">Daily Journal ✨</button><nav class="nav"><button onclick="show('home',this)" class="active"><b>⌂</b>Home</button><button onclick="show('planner',this)"><b>✓</b>Tasks</button><button onclick="show('money',this)"><b>＋</b>Money</button><button onclick="show('progress',this)"><b>◌</b>Progress</button><button onclick="show('settings',this)"><b>⚙</b>Settings</button></nav>
 <div class="toast" id="toast"></div>
 <script>
 const d=new Date();document.getElementById('date').textContent=d.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'});
 function show(id,btn){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active');window.scrollTo(0,0);updateProgress()}
 function toast(t){let x=document.getElementById('toast');x.textContent=t;x.style.display='block';setTimeout(()=>x.style.display='none',1500)}
-const base=['Start work on time','Drink enough water','Take a short movement break','Self-care routine','Plan tomorrow'];let custom=JSON.parse(localStorage.getItem('amaliTasks')||'[]');
-function taskHTML(t){return '<div class="task"><span class="check"></span>'+t+'</div>'}
-function renderTasks(){document.getElementById('homeTasks').innerHTML=base.map(taskHTML).join('')+custom.map(taskHTML).join('');document.querySelectorAll('#homeTasks .check').forEach(c=>c.onclick=()=>{c.classList.toggle('done');updateProgress()});document.getElementById('tasks').innerHTML=custom.map(taskHTML).join('')||'<div class="small" style="padding-top:14px">Your added tasks will appear here.</div>';document.querySelectorAll('#tasks .check').forEach(c=>c.onclick=()=>c.classList.toggle('done'));updateProgress()}
-function addTask(){let i=document.getElementById('taskInput'),v=i.value.trim();if(!v)return;custom.push(v);localStorage.setItem('amaliTasks',JSON.stringify(custom));i.value='';renderTasks();toast('Task added ✨')}
-let waterCount=Number(localStorage.getItem('amaliWater')||0);function water(){waterCount=Math.min(8,waterCount+1);localStorage.setItem('amaliWater',waterCount);document.getElementById('waterText').textContent=waterCount+' / 8 glasses';document.getElementById('waterBar').style.width=waterCount/8*100+'%';updateProgress()}
-
-let notes=JSON.parse(localStorage.getItem('amaliNotes')||'[]');function renderNotes(){document.getElementById('notes').innerHTML=notes.map(n=>'<div class="note">'+n+'</div>').join('')}function saveNote(){let i=document.getElementById('noteInput'),v=i.value.trim();if(!v)return;notes.unshift(v);localStorage.setItem('amaliNotes',JSON.stringify(notes));i.value='';renderNotes();toast('Note saved 🌷')}
-function updateProgress(){let n=document.querySelectorAll('#homeTasks .check.done').length;document.getElementById('taskCount').textContent=n+' / '+(base.length+custom.length);document.getElementById('plannerCount').textContent=n+' done';document.getElementById('progTasks').textContent=n;document.getElementById('progWater').textContent=waterCount+' / 8'}
-function clearData(){localStorage.removeItem('amaliNotes');localStorage.removeItem('amaliWater');localStorage.removeItem('amaliTasks');notes=[];waterCount=0;custom=[];renderNotes();renderTasks();document.getElementById('waterText').textContent='0 / 8 glasses';document.getElementById('waterBar').style.width='0%';toast('Saved data cleared')}
-renderNotes();renderTasks();if(waterCount){document.getElementById('waterText').textContent=waterCount+' / 8 glasses';document.getElementById('waterBar').style.width=waterCount/8*100+'%'}updateProgress();
-</script><script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+const base=['Start work on time','Drink enough water','Take a short movement break','Self-care routine','Plan tomorrow'];
+let custom=JSON.parse(localStorage.getItem('amaliTasks')||'[]');
+let taskState=JSON.parse(localStorage.getItem('imAmaliTaskStateV1')||'{}');
+function taskHTML(t,key){return '<div class="task"><span class="check '+(taskState[key]?'done':'')+'" data-task="'+key+'"></span>'+t+'</div>'}
+function saveTaskState(){localStorage.setItem('imAmaliTaskStateV1',JSON.stringify(taskState))}
+function toggleTask(key){taskState[key]=!taskState[key];saveTaskState();renderTasks();toast(taskState[key]?'Task completed ✓':'Task unchecked')}
+function renderTasks(){
+ document.getElementById('homeTasks').innerHTML=base.map((t,i)=>taskHTML(t,'base-'+i)).join('')+custom.map((t,i)=>taskHTML(t,'custom-'+i)).join('');
+ document.querySelectorAll('#homeTasks .check').forEach(c=>c.onclick=()=>toggleTask(c.dataset.task));
+ document.getElementById('tasks').innerHTML=custom.map((t,i)=>taskHTML(t,'custom-'+i)).join('')||'<div class="small" style="padding-top:14px">Your added tasks will appear here.</div>';
+ document.querySelectorAll('#tasks .check').forEach(c=>c.onclick=()=>toggleTask(c.dataset.task));
+ updateProgress()
+}
+function addTask(){
+ let i=document.getElementById('taskInput'),v=i.value.trim();if(!v)return;
+ custom.push(v);localStorage.setItem('amaliTasks',JSON.stringify(custom));
+ taskState['custom-'+(custom.length-1)]=false;saveTaskState();
+ i.value='';renderTasks();toast('Task added ✨')
 }
 </script>
 
@@ -253,7 +287,7 @@ renderMoney();renderGoal();
   localStorage.setItem('imAmaliGoalV7',JSON.stringify({
     title:data.goalTitle, pct:Number(data.goalPct)||0, desc:data.goalDesc
   }));
-  apply(); renderMoney(); renderGoal(); close(); if(typeof toast==='function')toast('Everything updated ✓');
+  apply(); renderMoney(); renderGoal(); if(typeof renderPayments==='function')renderPayments(); close(); if(typeof toast==='function')toast('Everything updated ✓');
  }
  function esc(x){return String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
  function apply(){
@@ -317,5 +351,200 @@ renderMoney();renderGoal();
 })();
 </script>
 
+
+<script>
+(function(){
+const PMKEY='imAmaliMonthlyPaymentsV1';
+const PKEY='imAmaliMonthlyPaidV1';
+const DEFAULT_PAYMENTS=[
+ {id:'loan',name:'Loan payment',amount:800},
+ {id:'rent',name:'Room rent',amount:300},
+ {id:'transport',name:'Transport',amount:200},
+ {id:'phone',name:'Phone top-up',amount:60},
+ {id:'groceries',name:'Groceries',amount:0},
+ {id:'other',name:'Other',amount:0}
+];
+function monthKey(){let d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')}
+function readJSON(k,d){try{let x=JSON.parse(localStorage.getItem(k));return x??d}catch(e){return d}}
+function payments(){
+ let p=readJSON(PMKEY,null);
+ if(!Array.isArray(p)||!p.length){
+   let base=window.profile||{};
+   p=DEFAULT_PAYMENTS.map(x=>Object.assign({},x));
+   p[0].amount=Number(base.loanPay)||800;p[1].amount=Number(base.rent)||300;p[2].amount=Number(base.transport)||200;p[3].amount=Number(base.phone)||60;
+   localStorage.setItem(PMKEY,JSON.stringify(p));
+ }
+ return p
+}
+function paidMap(){let all=readJSON(PKEY,{}),m=monthKey();if(!all[m])all[m]={};return {all,m,map:all[m]}}
+window.renderPayments=function(){
+ let p=payments(),q=paidMap(),el=document.getElementById('paymentList');if(!el)return;
+ let done=0;
+ el.innerHTML=p.map((x,i)=>{
+   let paid=!!q.map[x.id];if(paid)done++;
+   return '<div class="row" style="gap:10px"><span style="flex:1"><b>'+escPay(x.name)+'</b><br><small>RM '+Number(x.amount||0).toLocaleString()+'</small></span><button onclick="togglePaid(\''+x.id+'\')" style="border:1px solid #dce5ec;border-radius:12px;padding:8px 12px;background:'+(paid?'#b7ddf0':'#f8fafc')+'">'+(paid?'✓ Paid':'Mark paid')+'</button></div>'
+ }).join('');
+ let s=document.getElementById('paidSummary');if(s)s.textContent=done+' / '+p.length+' paid';
+ localStorage.setItem(PKEY,JSON.stringify(q.all));
+}
+window.togglePaid=function(id){
+ let q=paidMap();q.map[id]=!q.map[id];q.all[q.m? q.m:monthKey()]=q.map;localStorage.setItem(PKEY,JSON.stringify(q.all));renderPayments();toast(q.map[id]?'Marked paid ✓':'Marked unpaid')
+}
+window.openPaymentEditor=function(){
+ let p=payments(),el=document.getElementById('paymentEditRows');
+ el.innerHTML=p.map((x,i)=>'<div style="margin:10px 0"><div style="display:grid;grid-template-columns:1fr 110px;gap:8px"><input id="pn'+i+'" value="'+escAttr(x.name)+'"><input id="pa'+i+'" type="number" step=".01" value="'+Number(x.amount||0)+'"></div></div>').join('');
+ document.getElementById('paymentEditor').style.display='block'
+}
+window.savePaymentEditor=function(){
+ let p=payments();
+ p.forEach((x,i)=>{x.name=document.getElementById('pn'+i).value.trim()||'Payment';x.amount=Number(document.getElementById('pa'+i).value)||0});
+ localStorage.setItem(PMKEY,JSON.stringify(p));closePaymentEditor();renderPayments();toast('Payment list saved ✓')
+}
+window.closePaymentEditor=function(){document.getElementById('paymentEditor').style.display='none'}
+function escPay(x){return String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function escAttr(x){return escPay(x).replace(/`/g,'&#96;')}
+setTimeout(renderPayments,0);
+})();
+</script>
+
+<div id="journalModal" style="display:none;position:fixed;inset:0;background:rgba(20,30,45,.35);z-index:10020;padding:12px;overflow:auto">
+<div style="max-width:700px;margin:10px auto;background:#fff;border-radius:26px;padding:18px">
+<div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">Daily Journal ✨</h2><button class="btn" onclick="closeJournal()">Close</button></div>
+<div class="small" style="margin:6px 0 12px">Write how you feel today. Add mood, stickers, doodles, icons, photos and a gentle paper background.</div>
+<div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px">
+<button class="btn" onclick="setJournalMood('😊')">😊</button><button class="btn" onclick="setJournalMood('🥰')">🥰</button><button class="btn" onclick="setJournalMood('😌')">😌</button><button class="btn" onclick="setJournalMood('😔')">😔</button><button class="btn" onclick="setJournalMood('😤')">😤</button><button class="btn" onclick="setJournalMood('❤️')">❤️</button>
+</div>
+<div id="journalPaper" style="border-radius:20px;padding:14px;min-height:330px;background-color:#fffdf8;background-image:radial-gradient(#dbeaf2 1px,transparent 1px);background-size:18px 18px">
+<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><span id="journalMood" style="font-size:28px">😊</span><input id="journalTitle" placeholder="Today's title" style="flex:1;padding:10px;border:1px solid #dce5ec;border-radius:12px"></div>
+<textarea id="journalText" placeholder="How did you feel today? What happened? What are you grateful for?" style="width:100%;min-height:180px;box-sizing:border-box;padding:12px;border:1px solid #dce5ec;border-radius:14px;background:rgba(255,255,255,.78);font-size:15px"></textarea>
+<div id="journalDecor" style="min-height:35px;padding:8px 0;font-size:25px"></div>
+<div id="journalImages" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+</div>
+<div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:10px">
+<button class="btn" onclick="addJournalSticker('🌸')">🌸</button><button class="btn" onclick="addJournalSticker('🦋')">🦋</button><button class="btn" onclick="addJournalSticker('✨')">✨</button><button class="btn" onclick="addJournalSticker('🌿')">🌿</button><button class="btn" onclick="addJournalSticker('☁️')">☁️</button><button class="btn" onclick="addJournalSticker('🎀')">🎀</button>
+<button class="btn" onclick="addJournalSticker('♡')">♡</button><button class="btn" onclick="addJournalSticker('✦')">✦</button>
+<label class="btn" style="cursor:pointer">Add image<input id="journalImageInput" type="file" accept="image/*" multiple style="display:none" onchange="addJournalImages(this.files)"></label>
+</div>
+<div style="display:flex;gap:8px;margin-top:12px"><button class="btn" onclick="clearJournalDecor()">Clear stickers/images</button><button class="btn" style="flex:1" onclick="saveJournal()">Save today's journal ✓</button></div>
+</div></div>
+<script>
+(function(){
+const JK='imAmaliDailyJournalV1';
+function dayKey(){let d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function allJ(){try{return JSON.parse(localStorage.getItem(JK)||'{}')}catch(e){return {}}}
+function saveAllJ(x){localStorage.setItem(JK,JSON.stringify(x))}
+function escJ(x){return String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+window.openJournal=function(){let d=allJ()[dayKey()]||{mood:'😊',title:'',text:'',stickers:[],images:[]};journalMood.textContent=d.mood||'😊';journalTitle.value=d.title||'';journalText.value=d.text||'';journalDecor.textContent=(d.stickers||[]).join(' ');journalImages.innerHTML=(d.images||[]).map(x=>'<img src="'+x+'" style="width:90px;height:70px;object-fit:cover;border-radius:12px">').join('');journalModal.style.display='block'}
+window.closeJournal=function(){journalModal.style.display='none'}
+window.setJournalMood=function(x){journalMood.textContent=x}
+window.addJournalSticker=function(x){journalDecor.textContent+=(journalDecor.textContent?' ':'')+x}
+window.clearJournalDecor=function(){journalDecor.textContent='';journalImages.innerHTML=''}
+window.addJournalImages=function(files){Array.from(files||[]).forEach(f=>{let r=new FileReader();r.onload=()=>{let im=document.createElement('img');im.src=r.result;im.style.cssText='width:90px;height:70px;object-fit:cover;border-radius:12px';journalImages.appendChild(im)};r.readAsDataURL(f)})}
+window.saveJournal=function(){let imgs=Array.from(journalImages.querySelectorAll('img')).map(x=>x.src);let stickers=journalDecor.textContent.trim().split(/\s+/).filter(Boolean);let a=allJ();a[dayKey()]={mood:journalMood.textContent,title:journalTitle.value,text:journalText.value,stickers,images:imgs,savedAt:new Date().toISOString()};saveAllJ(a);closeJournal();if(typeof toast==='function')toast('Journal saved ✓')}
+window.loadJournalToday=function(){let a=allJ(),d=a[dayKey()];return d||null}
+})();
+</script>
+
+<script>
+(function(){
+function calcAvailable(){
+ try{
+  let income=Number((window.profile||{}).income)||0;
+  let p=JSON.parse(localStorage.getItem('imAmaliMonthlyPaymentsV1')||'[]');
+  let all=JSON.parse(localStorage.getItem('imAmaliMonthlyPaidV1')||'{}');
+  let d=new Date(),k=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'),paid=all[k]||{};
+  let paidTotal=p.reduce((s,x)=>s+(paid[x.id]?Number(x.amount||0):0),0);
+  let v=income-paidTotal,el=document.getElementById('availableBalance');if(el)el.textContent='RM '+v.toLocaleString(undefined,{maximumFractionDigits:2});
+  let b=document.getElementById('balanceBar');if(b)b.style.width=(income?Math.max(0,Math.min(100,v/income*100)):0)+'%';
+ }catch(e){}
+}
+window.calcAvailable=calcAvailable;
+setTimeout(calcAvailable,50);
+let old=window.renderPayments; if(old)window.renderPayments=function(){old();calcAvailable()}
+})();
+</script>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+(function(){
+const DRIVE_FILE='im-amali-backup.json';
+const SCOPES='https://www.googleapis.com/auth/drive.appdata';
+function status(t){let e=document.getElementById('googleBackupStatus');if(e)e.textContent=t}
+function client(){return (document.getElementById('googleClientId')||{}).value.trim()||localStorage.getItem('imAmaliGoogleClientId')||''}
+function allData(){
+ let d={};
+ for(let i=0;i<localStorage.length;i++){let k=localStorage.key(i);try{d[k]=JSON.parse(localStorage.getItem(k))}catch(e){d[k]=localStorage.getItem(k)}}
+ return {format:'Im Amali backup',version:1,savedAt:new Date().toISOString(),data:d};
+}
+function token(){
+ return new Promise((resolve,reject)=>{
+   let cid=client();
+   if(!cid){reject(new Error('Enter your Google OAuth Web Client ID first.'));return}
+   localStorage.setItem('imAmaliGoogleClientId',cid);
+   if(!window.google||!google.accounts||!google.accounts.oauth2){reject(new Error('Google sign-in is still loading. Try again.'));return}
+   let c=google.accounts.oauth2.initTokenClient({client_id:cid,scope:SCOPES,callback:r=>r.error?reject(new Error(r.error)):resolve(r.access_token)});
+   c.requestAccessToken({prompt:''});
+ });
+}
+async function api(url,opt){
+ let t=await token();let o=opt||{};o.headers=Object.assign({},o.headers,{'Authorization':'Bearer '+t});return fetch(url,o)
+}
+window.imGoogleBackup=async function(){
+ try{
+  status('Signing in to Google…');
+  let body=JSON.stringify(allData());
+  let list=await api('https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=name%3D%27'+encodeURIComponent(DRIVE_FILE)+'%27&fields=files(id,name)');
+  if(!list.ok)throw new Error('Drive access failed');
+  let found=(await list.json()).files||[];
+  let meta={name:DRIVE_FILE,parents:['appDataFolder']};
+  let res;
+  if(found.length){
+   res=await api('https://www.googleapis.com/upload/drive/v3/files/'+found[0].id+'?uploadType=multipart',{method:'PATCH',headers:{'Content-Type':'multipart/related; boundary=imAmaliBoundary'},body:
+`--imAmaliBoundary\r
+Content-Type: application/json; charset=UTF-8\r
+\r
+${JSON.stringify(meta)}\r
+--imAmaliBoundary\r
+Content-Type: application/json\r
+\r
+${body}\r
+--imAmaliBoundary--`});
+  }else{
+   res=await api('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart',{method:'POST',headers:{'Content-Type':'multipart/related; boundary=imAmaliBoundary'},body:
+`--imAmaliBoundary\r
+Content-Type: application/json; charset=UTF-8\r
+\r
+${JSON.stringify(meta)}\r
+--imAmaliBoundary\r
+Content-Type: application/json\r
+\r
+${body}\r
+--imAmaliBoundary--`});
+  }
+  if(!res.ok)throw new Error('Backup upload failed');
+  status('Backup saved to your Google Drive ✓');
+ }catch(e){status(e.message||'Backup failed')}
+};
+window.imGoogleRestore=async function(){
+ try{
+  status('Checking Google Drive…');
+  let list=await api('https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=name%3D%27'+encodeURIComponent(DRIVE_FILE)+'%27&fields=files(id,name,modifiedTime)');
+  if(!list.ok)throw new Error('Drive access failed');
+  let files=(await list.json()).files||[];
+  if(!files.length)throw new Error('No Im Amali backup found.');
+  let res=await api('https://www.googleapis.com/drive/v3/files/'+files[0].id+'?alt=media');
+  if(!res.ok)throw new Error('Could not download backup');
+  let pack=await res.json();
+  if(!pack.data)throw new Error('Invalid Im Amali backup');
+  Object.keys(pack.data).forEach(k=>{
+    let v=pack.data[k];
+    localStorage.setItem(k,typeof v==='string'?v:JSON.stringify(v));
+  });
+  status('Backup restored successfully ✓ Reloading…');
+  setTimeout(()=>location.reload(),700);
+ }catch(e){status(e.message||'Restore failed')}
+};
+})();
+</script>
 </body></html>
 
