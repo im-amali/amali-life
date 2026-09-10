@@ -6,7 +6,7 @@
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#f7f9fc",
-  "theme_color": "#f7f9fc",
+  "theme_color": "#b2dcef",
   "description": "Amali's personal daily-life organizer",
   "icons": [
     {

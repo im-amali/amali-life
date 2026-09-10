@@ -49,7 +49,7 @@
 
 <section id="progress" class="screen"><button class="back" onclick="show('home')">← Home</button><div class="pageTitle">Progress</div><div class="card"><div class="cardhead"><div class="title">This week</div><span class="pill">Growing</span></div><div class="grid2"><div class="mini"><div class="small">Tasks completed</div><b id="progTasks">0</b></div><div class="mini"><div class="small">Water today</div><b id="progWater">0 / 8</b></div><div class="mini"><div class="small">Goal progress</div><b>70%</b></div><div class="mini"><div class="small">Budget used</div><b>28%</b></div></div></div><div class="card"><div class="title">Keep going, Amali 🌷</div><p class="small">Consistency matters more than perfection.</p></div></section>
 
-<section id="settings" class="screen"><button class="back" onclick="show('home')">← Home</button><div class="pageTitle">Settings</div><div class="card"><div class="row"><span>🌷 App name</span><b>Im Amali</b></div><div class="row"><span>🎨 Theme</span><b>Soft Minimal</b></div><button class="btn full" onclick="openProfile()">Edit Income, Loan & Expenses</button><button class="btn full" onclick="openGoalSettings()">Edit Main Goal</button></div></section>
+<section id="settings" class="screen"><button class="back" onclick="show('home')">← Home</button><div class="pageTitle">Settings</div><div class="card"><div class="row"><span>🌷 App name</span><b>Im Amali</b></div><div class="row"><span>🎨 Theme</span><b>Soft Minimal</b></div><button class="btn full" onclick="openGoalSettings()">Edit Main Goal</button></div></section>
 </main>
 
 <nav class="nav"><button onclick="show('home',this)" class="active"><b>⌂</b>Home</button><button onclick="show('planner',this)"><b>✓</b>Tasks</button><button onclick="show('money',this)"><b>＋</b>Money</button><button onclick="show('progress',this)"><b>◌</b>Progress</button><button onclick="show('settings',this)"><b>⚙</b>Settings</button></nav>
@@ -258,3 +258,63 @@ renderMoney();renderGoal();
 </script>
 
 </body></html>
+
+<style>
+#imEditor{display:none;position:fixed;inset:0;z-index:100000;background:rgba(20,40,60,.28);padding:14px;overflow:auto}
+#imEditor .card{max-width:680px;margin:15px auto;background:#fff;border-radius:24px;padding:20px;box-shadow:0 20px 60px rgba(20,50,80,.2)}
+#imEditor h2{margin:0 0 4px}.hint{font-size:12px;color:#71808d;margin-bottom:14px}
+.imsec{border-top:1px solid #edf1f5;padding-top:14px;margin-top:15px}.imgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.imsec label{font-size:11px;color:#667583}.imsec input{width:100%;box-sizing:border-box;margin:3px 0 5px;padding:10px;border:1px solid #dce5ec;border-radius:11px;background:#f9fbfd}
+.imact{display:flex;gap:9px;margin-top:18px}.imact button{flex:1;padding:12px;border:0;border-radius:13px;font-weight:700}
+@media(max-width:520px){.imgrid{grid-template-columns:1fr}}
+</style>
+<div id="imEditor"><div class="card">
+<h2>Edit Everything</h2><div class="hint">One place to change your whole app.</div>
+<div class="imsec"><b>Home</b><div class="imgrid">
+<label>App name<input id="ie_appName"></label><label>Greeting<input id="ie_greeting"></label>
+<label>Today's focus<input id="ie_focus"></label><label>Main goal<input id="ie_goal"></label>
+</div></div>
+<div class="imsec"><b>Money & Loan</b><div class="imgrid">
+<label>Income RM<input id="ie_income" type="number"></label><label>Loan payment RM<input id="ie_loanPayment" type="number"></label>
+<label>Loan balance LKR<input id="ie_loanBalance" type="number"></label><label>Interest %<input id="ie_interest" type="number" step=".01"></label>
+<label>Transport RM<input id="ie_transport" type="number"></label><label>Phone RM<input id="ie_phone" type="number"></label>
+<label>Rent RM<input id="ie_rent" type="number"></label><label>Other budget RM<input id="ie_other" type="number"></label>
+<label>Monthly budget RM<input id="ie_budget" type="number"></label>
+</div></div>
+<div class="imsec"><b>Routine & Health</b><div class="imgrid">
+<label>Morning routine<input id="ie_morning"></label><label>Work routine<input id="ie_work"></label>
+<label>Wind-down routine<input id="ie_wind"></label><label>Water target<input id="ie_water" type="number"></label>
+<label>Current weight kg<input id="ie_weight" type="number" step=".1"></label><label>Goal weight kg<input id="ie_goalWeight" type="number" step=".1"></label>
+</div></div>
+<div class="imsec"><b>Cycle</b><div class="imgrid">
+<label>Last period<input id="ie_period" type="date"></label><label>Cycle length<input id="ie_cycle" type="number"></label>
+<label>Period length<input id="ie_periodLen" type="number"></label>
+</div></div>
+<div class="imsec"><b>Meals</b><div class="imgrid">
+<label>Meal style<input id="ie_mealStyle"></label><label>Breakfast<input id="ie_breakfast"></label>
+<label>Lunch<input id="ie_lunch"></label><label>Snack<input id="ie_snack"></label><label>Dinner<input id="ie_dinner"></label>
+</div></div>
+<div class="imsec"><b>Goals & Self-care</b><div class="imgrid">
+<label>Progress %<input id="ie_progress" type="number"></label><label>Deadline<input id="ie_deadline"></label>
+<label>Habit 1<input id="ie_h1"></label><label>Habit 2<input id="ie_h2"></label>
+<label>Habit 3<input id="ie_h3"></label><label>Habit 4<input id="ie_h4"></label>
+</div><label>Goal description<input id="ie_goalDesc"></label></div>
+<div class="imact"><button onclick="document.getElementById('imEditor').style.display='none'">Close</button><button onclick="saveImEditor()">Save all</button></div>
+</div></div>
+<script>
+(function(){
+const key='imAmaliAllEditableV2';
+const D={appName:'Im Amali',greeting:'Good morning',focus:'Today’s focus',goal:'My main goal',
+income:2000,loanPayment:800,loanBalance:525000,interest:8,transport:200,phone:60,rent:300,other:0,budget:2000,
+morning:'Wake • water • skincare',work:'Work with focus',wind:'Shower • journal • sleep',water:8,weight:57,goalWeight:50,
+period:'',cycle:28,periodLen:5,mealStyle:'Balanced',breakfast:'',lunch:'',snack:'',dinner:'',progress:0,deadline:'',goalDesc:'',
+h1:'Skincare',h2:'Water',h3:'Walk',h4:'Journal'};
+const load=()=>{try{return Object.assign({},D,JSON.parse(localStorage.getItem(key)||'{}'))}catch(e){return {...D}}};
+window.openImEditor=function(){let d=load();Object.keys(d).forEach(k=>{let e=document.getElementById('ie_'+k);if(e)e.value=d[k]});document.getElementById('imEditor').style.display='block'};
+window.saveImEditor=function(){let d=load();Object.keys(d).forEach(k=>{let e=document.getElementById('ie_'+k);if(e)e.value!==''&&(d[k]=e.value)});
+['income','loanPayment','loanBalance','interest','transport','phone','rent','other','budget','water','weight','goalWeight','cycle','periodLen','progress'].forEach(k=>d[k]=Number(d[k]||0));
+localStorage.setItem(key,JSON.stringify(d));localStorage.setItem('imAmaliEditableMoney',JSON.stringify({income:d.income,loanPayment:d.loanPayment,loanBalance:d.loanBalance,interest:d.interest,transport:d.transport,phone:d.phone,rent:d.rent,otherBudget:d.other}));
+localStorage.setItem('imAmaliSettings',JSON.stringify(d));location.reload()};
+addEventListener('DOMContentLoaded',()=>{let b=document.createElement('button');b.textContent='Edit Everything';b.onclick=openImEditor;b.style.cssText='position:fixed;right:14px;bottom:76px;z-index:9999;padding:12px 16px;border:0;border-radius:18px;background:#b7ddf0;color:#173247;font-weight:700;box-shadow:0 7px 24px #0002';document.body.appendChild(b)});
+})();
+</script>
